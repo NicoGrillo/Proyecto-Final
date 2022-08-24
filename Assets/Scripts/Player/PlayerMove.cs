@@ -10,11 +10,11 @@ public class PlayerMove : MonoBehaviour
     [SerializeField][Range(1f, 10f)] float gravityForce = 9.81f;
     [SerializeField][Range(0.1f, 1f)] float rotateSpeed = 0.1f;
 
-    [SerializeField] float cameraAxisX = 0f;
-
-    CharacterController CC;
-    float gravityEffect;
-    bool isRunnnin = false;
+    private CharacterController CC;
+    private float cameraAxisX;
+    //private float cameraAxisY;
+    private float gravityEffect;
+    private bool isRunnnin = false;
 
     void Start()
     {
@@ -54,8 +54,14 @@ public class PlayerMove : MonoBehaviour
     {
         cameraAxisX += Input.GetAxis("Mouse X");
         //transform.rotation = Quaternion.Euler(0, cameraAxisX * rotateSpeed, 0);
-        Quaternion newRotation = Quaternion.Euler(0, cameraAxisX * rotateSpeed, 0);
-        transform.rotation = Quaternion.Lerp(transform.rotation, newRotation, 2f * Time.deltaTime);
+        Quaternion newRotationX = Quaternion.Euler(0, cameraAxisX * rotateSpeed, 0);
+        transform.rotation = Quaternion.Lerp(transform.rotation, newRotationX, 2f * Time.deltaTime);
+
+        /*
+        cameraAxisY += Input.GetAxis("Mouse Y");
+        Quaternion newRotationY = Quaternion.Euler(0, cameraAxisY * rotateSpeed, 0);
+        transform.rotation = Quaternion.Lerp(transform.rotation, newRotationY, 2f * Time.deltaTime);
+        */
     }
 
     private void RunMode()
