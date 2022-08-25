@@ -7,80 +7,86 @@ public class EnemyMove : MonoBehaviour
     //---------------------- PROPIEDADES SERIALIZADAS ----------------------
     [SerializeField] GameObject player;
     [SerializeField] GameObject avatar;
-    [SerializeField][Range(1f, 10f)] int patrolSpeed = 1;
-    [SerializeField][Range(1f, 10f)] int chaseSpeed = 3;
-    [SerializeField][Range(5f, 100f)] int patrolLimitZone = 10;
-    [SerializeField][Range(5f, 100f)] int chaseZone = 10;
+    [SerializeField] GameObject ammo;
+    [SerializeField] GameObject throwPoint;
+    [SerializeField] EnemyTypes enemyTypes;
+    [SerializeField][Range(1, 10)] int patrolSpeed = 1;
+    [SerializeField][Range(1, 10)] int chaseSpeed = 3;
+    [SerializeField][Range(5, 100)] int patrolLimitZone = 10;
+    [SerializeField][Range(5, 100)] int chaseZone = 10;
+    [SerializeField][Range(1, 10)] int knockedTime = 10;
     //---------------------- PROPIEDADES PUBLICAS ----------------------
-    public float knockedTime = 1f;
     //---------------------- PROPIEDADES PRIVADAS ----------------------
-    private Vector3 patrolPoint, idlePoint, playerPosition, enemyPosition;
+    private Vector3 patrolPoint, originPoint, playerPosition, enemyPosition;
+    //private Vector3 setThrowPoint;
     private float wayPointDistance, distanceToPlayer, resetPointCount;
     private Transform playerTransform;
-    private Animation ghoulAnimation;
+    private Animation avatarAnimation;
     private bool canMove, canAttack, alreadyKnocked;
     private EnemyData enemyData;
+    enum EnemyTypes { Melee, Range, Elusive };
+    private bool toPlayer, ammoThrow, inSight;
+    private float minimunDistanceToPlayer;
+    //private bool boolean = true;
+    private float xValue = -1f;
 
     void Start()
     {
         playerTransform = player.GetComponent<Transform>();
-        ghoulAnimation = avatar.GetComponent<Animation>();
+        avatarAnimation = avatar.GetComponent<Animation>();
         enemyData = GetComponent<EnemyData>();
 
-        enemyPosition = transform.position;
-        idlePoint = enemyPosition;
+        originPoint = transform.position;
         canMove = true;
         canAttack = true;
         alreadyKnocked = true;
+        inSight = false;
         enemyData.KnockedLevel = 5;
+        //setThrowPoint = throwPoint.transform.position;
 
         NewPatrolPoint();
     }
 
     void Update()
     {
-        if (enemyData.KnockedLevel == 0) IsKnocked();
+        CheckIsKnocked();   //Verifico si está noqueado
+        PositionReset();    //Actualizo las posiciones del Enemy y del Player
+        DistanceToPlayer(); //Seteo la distancia al player
+        EnemyType();        //Que tipo de Enemy es
 
-        //Actualizo las posiciones del Enemy y del Player
-        enemyPosition = transform.position;
-        playerPosition = playerTransform.position - transform.position;
-
-        //Chequeo si la distancia al player es menor a ChaseZone
-        distanceToPlayer = playerPosition.magnitude;
-        if (distanceToPlayer < 0) distanceToPlayer = distanceToPlayer * -1;             //Seteo Distancia como numero positivo
-
-        if (distanceToPlayer < chaseZone)   //Si está cerca, Enemy caza
-        {
-            if (distanceToPlayer < 1f && canAttack)     //Si está muy cerca, Enemy se detiene a golpear
-            {
-                ghoulAnimation.Play("Attack2");
-                canAttack = false;
-                canMove = false;
-                Invoke("AttackAgain", 2f);
-            }
-            if (canMove)
-            {
-                transform.LookAt(playerTransform.position);
-                Chase();
-            }
-        }
-        else    //Sino no esta cerca, Enemy patrulla
-        {
-            if (canMove) Patrol();
-        }
+        if (distanceToPlayer < chaseZone && inSight) Chase(toPlayer, ammoThrow, minimunDistanceToPlayer);   //Chequeo si la distancia al player es menor a ChaseZone, si esta cerca Chase
+        else if (canMove) Patrol();   //Sino no esta cerca, Patrol
     }
 
-    private void Chase()
+    private void Chase(bool value1, bool value2, float value3)
+    //Value1: True corre tras Player, False huye de él
+    //Value2: Lanza o no ammo
+    //Value3: Distancia minima al player
+
     {
-        ghoulAnimation.Play("Run");
-        transform.Translate(Vector3.forward * chaseSpeed * Time.deltaTime);
+        if (distanceToPlayer < value3 && canAttack)     //Si está muy cerca, Enemy se detiene a golpear
+        {
+            avatarAnimation.Play("Attack2");
+            canAttack = false;
+            canMove = false;
+            Invoke("AttackAgain", 2f);
+            if (value2) Instantiate(ammo, throwPoint.transform.position, transform.rotation);
+        }
+        if (canMove)
+        {
+            transform.LookAt(playerTransform.position);
+            if (!value1) transform.Rotate(0, 180, 0);
+            avatarAnimation.Play("Run");
+            transform.Translate(Vector3.forward * chaseSpeed * Time.deltaTime);
+        }
     }
 
     private void Patrol()
     {
+        inSight = false;
         transform.LookAt(patrolPoint);
         transform.Translate(Vector3.forward * patrolSpeed * Time.deltaTime);
-        ghoulAnimation.Play("Walk");
+        avatarAnimation.Play("Walk");
 
         resetPointCount += Time.deltaTime;      //Si se quedo trabado en algun Point se resetea el Point
         if (resetPointCount >= 4)
@@ -89,7 +95,7 @@ public class EnemyMove : MonoBehaviour
             canMove = false;
             Invoke("Idle", 3);
             resetPointCount = 0;
-            ghoulAnimation.Play("Idle");
+            avatarAnimation.Play("Idle");
         }
 
         wayPointDistance = patrolPoint.magnitude - enemyPosition.magnitude;         //Seteo Distancia como numero positivo
@@ -100,13 +106,36 @@ public class EnemyMove : MonoBehaviour
             canMove = false;
             Invoke("Idle", 3);
             resetPointCount = 0;
-            ghoulAnimation.Play("Idle");
+            avatarAnimation.Play("Idle");
+        }
+
+    }
+
+    private void EnemyType()
+    {
+        switch (enemyTypes)
+        {
+            case EnemyTypes.Melee:
+                ammoThrow = false;
+                toPlayer = true;
+                minimunDistanceToPlayer = 1f;
+                break;
+            case EnemyTypes.Range:
+                ammoThrow = true;
+                toPlayer = true;
+                minimunDistanceToPlayer = 5f;
+                break;
+            case EnemyTypes.Elusive:
+                ammoThrow = false;
+                toPlayer = false;
+                minimunDistanceToPlayer = 1f;
+                break;
         }
     }
 
     private void NewPatrolPoint()
     {
-        patrolPoint = idlePoint + new Vector3(Random.Range(-patrolLimitZone, patrolLimitZone), 0, Random.Range(-patrolLimitZone, patrolLimitZone));
+        patrolPoint = originPoint + new Vector3(Random.Range(-patrolLimitZone, patrolLimitZone), 0, Random.Range(-patrolLimitZone, patrolLimitZone));
     }
 
     private void Idle()
@@ -126,24 +155,74 @@ public class EnemyMove : MonoBehaviour
         {
             Debug.Log("enemigo knoqueado");
             canMove = false;
-            Invoke("WakeUp", 10);
+            canAttack = false;
+            Invoke("WakeUp", knockedTime);
             resetPointCount = 0;
-            ghoulAnimation.Play("Death");
+            avatarAnimation.Play("Death");
             alreadyKnocked = false;
-            //Invoke("StopAnim", knockedTime);
         }
     }
 
     private void WakeUp()
     {
         canMove = true;
+        canAttack = true;
         enemyData.KnockedLevel = 25;
         alreadyKnocked = true;
     }
 
-    private void StopAnim()
+    private void CheckIsKnocked()
     {
-        ghoulAnimation.Stop();
+        if (enemyData.KnockedLevel == 0) IsKnocked();
     }
+
+    private void PositionReset()
+    {
+        enemyPosition = transform.position;
+        playerPosition = playerTransform.position - transform.position;
+    }
+
+    private void DistanceToPlayer()
+    {
+        distanceToPlayer = playerPosition.magnitude;
+        if (distanceToPlayer < 0) distanceToPlayer = distanceToPlayer * -1;             //Seteo Distancia como numero positivo
+
+        RaycastHit seePlayer;
+        if (Physics.Raycast(new Vector3(transform.position.x, 1, transform.position.z), transform.TransformDirection(viewRange()), out seePlayer, chaseZone, ~(1 << 6))/* ||
+        Physics.Raycast(new Vector3(transform.position.x, 1, transform.position.z), transform.TransformDirection(Vector3.forward), out seePlayer, chaseZone, ~(1 << 6))*/)
+        {
+            Debug.Log(seePlayer.transform.name);
+            if (seePlayer.transform.CompareTag("Player"))
+            {
+                inSight = true;
+                Debug.Log("Player a la vista");
+            }
+        }
+    }
+
+    private Vector3 viewRange()
+    {
+        Vector3 value;
+        xValue += .1f;
+        value = new Vector3(xValue, 0, 1);
+        if (xValue > 1) xValue = -1f;
+
+        /*if (boolean) value = new Vector3(-1, 0, 1);
+        else value = new Vector3(1, 0, 1);
+        boolean = !boolean;*/
+
+        return value;
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.blue;
+        Vector3 direction = transform.TransformDirection(viewRange()) * chaseZone;
+        Gizmos.DrawRay(transform.position, direction);
+        /*direction = transform.TransformDirection(Vector3.forward) * chaseZone;
+        Gizmos.DrawRay(transform.position, direction);*/
+        //Gizmos.DrawLine(shootPoint.position, direction); ESTE GIZMO NO AFECTA LA ROTACION
+    }
+
 }
 

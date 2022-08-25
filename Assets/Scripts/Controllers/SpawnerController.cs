@@ -5,12 +5,19 @@ using UnityEngine;
 public class SpawnerController : MonoBehaviour
 {
     [SerializeField] GameObject spawnGO;
-
-    [SerializeField][Range(1f, 10f)] float spawnTime;
+    [SerializeField][Range(1, 10)] int spawnTime;
+    [SerializeField][Range(1, 10)] int spawnDelay;
     [SerializeField] bool spawnOn;
 
     private float count;
+    
 
+    void Start()
+    {
+        count = spawnDelay;
+ 
+    }
+    
     void Update()
     {
         count += Time.deltaTime;
@@ -25,4 +32,6 @@ public class SpawnerController : MonoBehaviour
     {
         Instantiate(spawnGO, transform.position, transform.rotation);
     }
+
+
 }

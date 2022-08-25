@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4929284215372530}
   - component: {fileID: 33642314674758590}
   - component: {fileID: 23142616818013596}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: LOD_0_Metall03
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -94,7 +94,7 @@ GameObject:
   - component: {fileID: 4602485016606360}
   - component: {fileID: 33425800964844086}
   - component: {fileID: 23741366576909278}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: LOD_0_HouseWindows
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -177,7 +177,7 @@ GameObject:
   - component: {fileID: 4562756319454902}
   - component: {fileID: 33318556950016704}
   - component: {fileID: 23923927476129952}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: LOD_0_HouseInterior
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -262,7 +262,7 @@ GameObject:
   - component: {fileID: 4563718593517084}
   - component: {fileID: 33140201001274452}
   - component: {fileID: 23278980953177764}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: LOD_0_WerandaWindows
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -345,7 +345,7 @@ GameObject:
   - component: {fileID: 4152677807950642}
   - component: {fileID: 33414339862388040}
   - component: {fileID: 23437667813360196}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: LOD_0_DoorWood
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -428,7 +428,7 @@ GameObject:
   - component: {fileID: 4654605070355910}
   - component: {fileID: 33328406945190518}
   - component: {fileID: 23610792490912510}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: LOD_0_WerandaWood
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -513,7 +513,7 @@ GameObject:
   - component: {fileID: 4960898686703572479}
   - component: {fileID: 2951553792704776363}
   - component: {fileID: 8986531855373593409}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: House
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -604,7 +604,7 @@ GameObject:
   - component: {fileID: 4296963851191600}
   - component: {fileID: 33688354749444544}
   - component: {fileID: 23215184795830522}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: LOD_0_SrubWood
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -688,7 +688,7 @@ GameObject:
   - component: {fileID: 4749587613592510}
   - component: {fileID: 33940966833722266}
   - component: {fileID: 23505713652696400}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: LOD_0_ZavalinkaWood
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -772,7 +772,7 @@ GameObject:
   - component: {fileID: 4531721057112716}
   - component: {fileID: 33664885238943168}
   - component: {fileID: 23275808629503700}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: LOD_0_Obreshetka_stropily
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -857,7 +857,7 @@ GameObject:
   - component: {fileID: 4097836620128331159}
   - component: {fileID: 1394520378194554904}
   - component: {fileID: 8450112563547815225}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: BlackWindow (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -939,7 +939,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2922073103412717411}
   - component: {fileID: 4980121604239480214}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Stairs
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -985,7 +985,7 @@ GameObject:
   - component: {fileID: 5772965065544665161}
   - component: {fileID: 4113525060486805073}
   - component: {fileID: 4166572354034180552}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: BlackWindow (6)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1068,7 +1068,7 @@ GameObject:
   - component: {fileID: 53961294673995327}
   - component: {fileID: 3330494924447571231}
   - component: {fileID: 909433581895508660}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: BlackWindow (8)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1151,7 +1151,7 @@ GameObject:
   - component: {fileID: 7148424386141411250}
   - component: {fileID: 813444815511874040}
   - component: {fileID: 4139419807999353785}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: BlackWindow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1234,7 +1234,7 @@ GameObject:
   - component: {fileID: 938661405521868899}
   - component: {fileID: 7654815446451239660}
   - component: {fileID: 5262242241094383827}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: BlackWindow (7)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1317,7 +1317,7 @@ GameObject:
   - component: {fileID: 7722503458063772170}
   - component: {fileID: 4961659230111296112}
   - component: {fileID: 1653944657745512585}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: BlackWindow (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1400,7 +1400,7 @@ GameObject:
   - component: {fileID: 6630683204102089865}
   - component: {fileID: 279113489933120591}
   - component: {fileID: 8709365765597498035}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: BlackWindow (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1483,7 +1483,7 @@ GameObject:
   - component: {fileID: 8899641028201923103}
   - component: {fileID: 273137915720049363}
   - component: {fileID: 5609434179598283316}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: BlackWindow (5)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1566,7 +1566,7 @@ GameObject:
   - component: {fileID: 536690861105143475}
   - component: {fileID: 2373636896799889688}
   - component: {fileID: 7624324048934206111}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: BlackWindow (4)
   m_TagString: Untagged
   m_Icon: {fileID: 0}

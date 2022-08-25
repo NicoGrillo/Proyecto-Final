@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 3308840}
   - component: {fileID: 2380810}
   - component: {fileID: 392928480837428986}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Rock Throw
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -6,43 +6,39 @@ public class Flashlight : MonoBehaviour
 {
     //---------------------- PROPIEDADES SERIALIZADAS ----------------------
     [SerializeField] GameObject flashlightGO;
-    [SerializeField][Range(1f, 30f)] float decayTime = 1f;
+    [SerializeField][Range(1, 30)] int decayTime = 1;
     //---------------------- PROPIEDADES PUBLICAS ----------------------
     //---------------------- PROPIEDADES PRIVADAS ----------------------
     private Flashlight_PRO flashlight;
-    private PlayerData playerData;
     private float count = 0f;
     private bool torchOn = false;
 
     void Start()
     {
         flashlight = flashlightGO.GetComponent<Flashlight_PRO>();
-        playerData = GetComponent<PlayerData>();
-
-        playerData.FlashLightLevel = 100f;
-        flashlight.Change_Intensivity(playerData.FlashLightLevel);
+        flashlight.Change_Intensivity(GameManager.FLLevel);
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.F) && playerData.FlashLightLevel > 0)
+        if (Input.GetKeyDown(KeyCode.F) && GameManager.FLLevel > 0)
         {
             torchOn = !torchOn;
             flashlight.Switch();
-
         }
+
         if (torchOn)
         {
-            flashlight.Change_Intensivity(playerData.FlashLightLevel);
+            flashlight.Change_Intensivity(GameManager.FLLevel);
             count += Time.deltaTime;
 
             if (count >= decayTime)
             {
-                playerData.FlashLightLevel -= 10;
+                GameManager.FLLevel -= 10;
                 count = 0;
 
-                if (playerData.FlashLightLevel == 0)
+                if (GameManager.FLLevel == 0)
                 {
                     flashlight.Switch();
                     torchOn = !torchOn;

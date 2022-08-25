@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 33000012477672910}
   - component: {fileID: 23000011849930378}
   - component: {fileID: 65000013658851324}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Lamp
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -108,7 +108,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2412103355795848422}
   - component: {fileID: 1934617074476247202}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Point Light
   m_TagString: Untagged
   m_Icon: {fileID: 0}

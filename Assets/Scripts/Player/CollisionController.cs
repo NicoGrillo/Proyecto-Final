@@ -5,18 +5,14 @@ using UnityEngine;
 public class CollisionController : MonoBehaviour
 {
     //---------------------- PROPIEDADES SERIALIZADAS ----------------------
-    [SerializeField] int playerTakeDamage;
+    [SerializeField] int takeMeleeDamage;
+    [SerializeField] int takeRangedDamage;
     //---------------------- PROPIEDADES PUBLICAS ----------------------
     //---------------------- PROPIEDADES PRIVADAS ----------------------
-    private PlayerData playerData;
-    private PlayerMove playerMove;
-    private Flashlight flashLight;
     private bool firstRock, beingHit;
 
     void Start()
     {
-        playerData = GetComponent<PlayerData>();
-        playerMove = GetComponent<PlayerMove>();
         firstRock = true;
         beingHit = false;
     }
@@ -26,7 +22,8 @@ public class CollisionController : MonoBehaviour
         if (other.CompareTag("Battery"))
         {
             Destroy(other.gameObject);
-            playerData.FlashLightLevel = 100f;
+            GameManager.FLLevel = 100;
+            Debug.Log("Encontré unas baterias, tengo la linterna completa");
         }
     }
 
@@ -37,18 +34,18 @@ public class CollisionController : MonoBehaviour
             if (firstRock)
             {
                 firstRock = false;
+                GameManager.RocksAmmo += 5;
                 Debug.Log("Algunas rocas, creo que puedo usarlas");
-                playerData.throwRocksAmmount += 5;
             }
         }
 
-        if (other.gameObject.CompareTag("Enemy"))
+        if (other.gameObject.CompareTag("ThrowRock"))
         {
             if (!beingHit)
             {
                 beingHit = true;
-                Debug.Log("Fui golpeado por enemigo, me queda " + playerData.HP + " de vida");
-                playerData.HP -= playerTakeDamage;
+                GameManager.HP -= takeRangedDamage;
+                Debug.Log("Fui golpeado por un proyectil, me queda " + GameManager.HP + " de vida");
                 Invoke("canHitAgain", 1);
             }
         }
@@ -61,8 +58,8 @@ public class CollisionController : MonoBehaviour
             if (!beingHit)
             {
                 beingHit = true;
-                Debug.Log("Fui golpeado por enemigo, me queda " + playerData.HP + " de vida");
-                playerData.HP -= playerTakeDamage;
+                GameManager.HP -= takeMeleeDamage;
+                Debug.Log("Fui golpeado por enemigo, me queda " + GameManager.HP + " de vida");
                 Invoke("canHitAgain", 1);
             }
         }

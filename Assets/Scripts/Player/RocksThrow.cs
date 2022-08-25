@@ -12,12 +12,9 @@ public class RocksThrow : MonoBehaviour
     //---------------------- PROPIEDADES PRIVADAS ----------------------
     private Vector3 setRockPoint;
     private bool canThrow;
-    private PlayerData playerData;
 
     void Start()
     {
-        playerData = GetComponent<PlayerData>();
-        playerData.throwRocksAmmount = 1;
         canThrow = true;
     }
 
@@ -28,15 +25,15 @@ public class RocksThrow : MonoBehaviour
 
     private void Throw()
     {
-        if (canThrow && playerData.throwRocksAmmount > 0)
+        if (canThrow && GameManager.RocksAmmo > 0)
         {
-            playerData.throwRocksAmmount -= 1;
+            GameManager.RocksAmmo--;
             setRockPoint = rockPoint.transform.position;
             Instantiate(rock, setRockPoint, transform.rotation);
             canThrow = false;
             Invoke("Reload", reloadTime);
         }
-        if (playerData.throwRocksAmmount == 0) Debug.Log("No tengo mas piedras");
+        if (GameManager.RocksAmmo == 0) Debug.Log("No tengo mas piedras");
     }
 
     private void Reload()

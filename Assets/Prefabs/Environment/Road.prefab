@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 5359737943035689550}
   - component: {fileID: 5359737943035689537}
   - component: {fileID: 5359737943035689536}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Dirt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -107,7 +107,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5359737943192893281}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Road
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -144,7 +144,7 @@ GameObject:
   - component: {fileID: 5359737943755912924}
   - component: {fileID: 5359737943755912927}
   - component: {fileID: 5359737943755912926}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Dirt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -242,7 +242,7 @@ GameObject:
   - component: {fileID: 5359737944510499355}
   - component: {fileID: 5359737944510499354}
   - component: {fileID: 5359737944510499357}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Road
   m_TagString: Untagged
   m_Icon: {fileID: 0}
