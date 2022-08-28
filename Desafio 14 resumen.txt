@@ -1,0 +1,16 @@
+Caso LIST
+	Script: PlayerItemsManager	Metodo Foreach
+	-Es llamado desde el Script PlayerCollisionController
+	para tener un regristro de las rocas grandes en la 
+	escena de donde el player recogió piedras para lanzar.
+
+Caso ARRAY				Metodo For
+	Script: SpawnerManager
+	-Se usa para desactivar o activar todos los Spawners
+	en la escena mediante codigo.
+
+Caso DICTIONARY				Metodo For
+	Script: PlayerItemsManager
+	-Es llamado desde el Script PlayerCollisionController
+	para ir recogiendo los items del mapa. Solo habilitada
+	la linterna que se activa con F.

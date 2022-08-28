@@ -11,11 +11,9 @@ public class SpawnerController : MonoBehaviour
 
     private float count;
     
-
     void Start()
     {
         count = spawnDelay;
- 
     }
     
     void Update()
@@ -32,6 +30,4 @@ public class SpawnerController : MonoBehaviour
     {
         Instantiate(spawnGO, transform.position, transform.rotation);
     }
-
-
 }

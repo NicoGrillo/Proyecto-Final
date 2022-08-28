@@ -16,6 +16,12 @@ public class PlayerData : MonoBehaviour
     private int health;
     public int HP { get { return health; } set { health = value; } }
 
+    [SerializeField] private int meleeDamageTake;
+    [SerializeField] private int rangedDamageTake;
+    [SerializeField] private int hypnoDamageTake;
+
+    enum DamageTypes { Melee, Range, Hypno };
+
     private void Start()
     {
         HP = 100;
@@ -23,7 +29,25 @@ public class PlayerData : MonoBehaviour
 
     private void Update()
     {
-        if (HP == 0) Debug.Log("Estoy muerto");
+        if (HP <= 0) Debug.Log("Estoy muerto");
+    }
+
+    public int DamageTake(string value)
+    {
+        int damage = 0;
+        switch (value)
+        {
+            case "Melee":
+                damage = meleeDamageTake;
+                break;
+            case "Range":
+                damage = rangedDamageTake;
+                break;
+            case "Hypno":
+                damage = hypnoDamageTake;
+                break;
+        }
+        return damage;
     }
 }
 

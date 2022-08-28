@@ -46,8 +46,8 @@ GameObject:
   - component: {fileID: -5070621788384981121}
   - component: {fileID: -565352442032546606}
   m_Layer: 0
-  m_Name: Ghoul
-  m_TagString: Enemy
+  m_Name: Hypnotizer
+  m_TagString: HypnoEnemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -115,7 +115,7 @@ MonoBehaviour:
   avatar: {fileID: 674893925491567645}
   ammo: {fileID: 3771291528384022113, guid: 40c5dc84ee1b5814bba27e52aa151557, type: 3}
   throwPoint: {fileID: 1383769298}
-  enemyTypes: 0
+  enemyTypes: 3
   patrolSpeed: 1
   chaseSpeed: 3
   patrolLimitZone: 5

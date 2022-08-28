@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyMove : MonoBehaviour
+public class EnemyController : MonoBehaviour
 {
     //---------------------- PROPIEDADES SERIALIZADAS ----------------------
     [SerializeField] GameObject player;
@@ -17,19 +17,18 @@ public class EnemyMove : MonoBehaviour
     [SerializeField][Range(1, 10)] int knockedTime = 10;
     //---------------------- PROPIEDADES PUBLICAS ----------------------
     //---------------------- PROPIEDADES PRIVADAS ----------------------
-    private Transform playerTransform;
-    private Animation avatarAnimation;
-    private EnemyData enemyData;
-    enum EnemyTypes { Melee, Range, Elusive, Hypno };
     private Vector3 patrolPoint, originPoint, playerPosition, enemyPosition;
     //private Vector3 setThrowPoint;
     private float wayPointDistance, distanceToPlayer, resetPointCount;
-    private float minimunDistanceToPlayer;
-    private float xValue = -1f;
+    private Transform playerTransform;
+    private Animation avatarAnimation;
     private bool canMove, canAttack, alreadyKnocked;
+    private EnemyData enemyData;
+    enum EnemyTypes { Melee, Range, Elusive };
     private bool toPlayer, ammoThrow, inSight;
-
+    private float minimunDistanceToPlayer;
     //private bool boolean = true;
+    private float xValue = -1f;
 
     void Start()
     {
@@ -52,7 +51,7 @@ public class EnemyMove : MonoBehaviour
     {
         CheckIsKnocked();   //Verifico si está noqueado
         PositionReset();    //Actualizo las posiciones del Enemy y del Player
-        DistanceToPlayer(); //Seteo la distancia al player
+        PlayerInSight();    //Player en rango de vision?
         EnemyType();        //Que tipo de Enemy es
 
         if (distanceToPlayer < chaseZone && inSight) Chase(toPlayer, ammoThrow, minimunDistanceToPlayer);   //Chequeo si la distancia al player es menor a ChaseZone, si esta cerca Chase
@@ -131,13 +130,6 @@ public class EnemyMove : MonoBehaviour
                 toPlayer = false;
                 minimunDistanceToPlayer = 1f;
                 break;
-            case EnemyTypes.Hypno:
-                ammoThrow = false;
-                toPlayer = true;
-                minimunDistanceToPlayer = 10f;
-                //canAttack = false;
-                break;
-
         }
     }
 
@@ -190,7 +182,7 @@ public class EnemyMove : MonoBehaviour
         playerPosition = playerTransform.position - transform.position;
     }
 
-    private void DistanceToPlayer()
+    private void PlayerInSight()
     {
         distanceToPlayer = playerPosition.magnitude;
         if (distanceToPlayer < 0) distanceToPlayer = distanceToPlayer * -1;             //Seteo Distancia como numero positivo
@@ -231,6 +223,4 @@ public class EnemyMove : MonoBehaviour
         Gizmos.DrawRay(transform.position, direction);*/
         //Gizmos.DrawLine(shootPoint.position, direction); ESTE GIZMO NO AFECTA LA ROTACION
     }
-
 }
-

@@ -33,11 +33,19 @@ public class RocksThrow : MonoBehaviour
             canThrow = false;
             Invoke("Reload", reloadTime);
         }
-        if (GameManager.RocksAmmo == 0) Debug.Log("No tengo mas piedras");
+        if (GameManager.RocksAmmo == 0)
+        {
+            HUDManager.Instance.SetSelectedText("No tengo mas piedras");
+            Invoke("ResetSelectedText", 3);
+        }
     }
 
     private void Reload()
     {
         canThrow = true;
+    }
+    private void ResetSelectedText()
+    {
+        HUDManager.Instance.SetSelectedText("");
     }
 }

@@ -4,51 +4,57 @@ using UnityEngine;
 
 public class PlayerVision : MonoBehaviour
 {
-    [SerializeField] private Transform shootPoint;
+    [SerializeField] private Transform visionPoint;
+    [SerializeField] private float rayDistance = 10f;
 
-    [SerializeField]
-    private float rayDistance = 10f;
-
-    [SerializeField] private GameObject bullet;
-
-    private bool canShoot = true;
+    private bool canHypno;
+    private PlayerMove playerMove;
+    private float count;
 
     void Start()
     {
-
+        canHypno = true;
+        count = 0;
+        playerMove = GetComponent<PlayerMove>();
     }
 
     // Update is called once per frame
     private void FixedUpdate()
     {
-        CannonRaycast();
+        VisionRaycast();
     }
 
-    private void CannonRaycast()
+    private void VisionRaycast()
     {
         RaycastHit hit;
-        if (Physics.Raycast(shootPoint.position, shootPoint.TransformDirection(Vector3.forward), out hit, rayDistance))
+        if (Physics.Raycast(visionPoint.position, visionPoint.TransformDirection(Vector3.forward), out hit, rayDistance))
         {
-            if (hit.transform.CompareTag("Player") && canShoot)
+            if (hit.transform.CompareTag("HypnoEnemy") && canHypno)
             {
-                Debug.Log("COLLISION CON PLAYER");
-                Instantiate(bullet, shootPoint.transform.position, shootPoint.transform.rotation);
-                canShoot = false;
-                Invoke("delayShoot", 1f);
+                count += Time.deltaTime;
+                if (count >= 3) //canHypno = true;
+                {
+                    //HUDManager.Instance.SetSelectedText("Hipnotizado");
+                    playerMove.IsHypno = true;
+                    canHypno = false;
+                    Invoke("delayRecover", 5f);
+                }
             }
+            else count = 0;
         }
     }
 
-    void delayShoot()
+    void delayRecover()
     {
-        canShoot = true;
+        playerMove.IsHypno = false;
+        canHypno = true;
     }
 
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.blue;
-        Vector3 direction = shootPoint.TransformDirection(Vector3.forward) * rayDistance;
-        Gizmos.DrawRay(shootPoint.position, direction);
+        Vector3 direction = visionPoint.TransformDirection(Vector3.forward) * rayDistance;
+        Gizmos.DrawRay(visionPoint.position, direction);
         //Gizmos.DrawLine(shootPoint.position, direction); ESTE GIZMO NO AFECTA LA ROTACION
     }
 }

@@ -8,6 +8,8 @@ TagManager:
   - Rocks
   - ThrowRock
   - Enemy
+  - HypnoEnemy
+  - Items
   layers:
   - Default
   - TransparentFX
