@@ -28,24 +28,23 @@ public class RocksThrow : MonoBehaviour
         if (canThrow && GameManager.RocksAmmo > 0)
         {
             GameManager.RocksAmmo--;
+            HUDManager.Instance.ThrowRocksText("x" + GameManager.RocksAmmo);
+            HUDManager.EnableItem(1, 2);
             setRockPoint = rockPoint.transform.position;
             Instantiate(rock, setRockPoint, transform.rotation);
             canThrow = false;
             Invoke("Reload", reloadTime);
+            if (GameManager.RocksAmmo == 0) HUDManager.EnableItem(1, 2);
         }
         if (GameManager.RocksAmmo == 0)
         {
             HUDManager.Instance.SetSelectedText("No tengo mas piedras");
-            Invoke("ResetSelectedText", 3);
         }
     }
 
     private void Reload()
     {
+        HUDManager.EnableItem(1, 0);
         canThrow = true;
-    }
-    private void ResetSelectedText()
-    {
-        HUDManager.Instance.SetSelectedText("");
     }
 }

@@ -164,6 +164,7 @@ public class EnemyMove : MonoBehaviour
             Debug.Log("enemigo knoqueado");
             canMove = false;
             canAttack = false;
+            CancelInvoke();
             Invoke("WakeUp", knockedTime);
             resetPointCount = 0;
             avatarAnimation.Play("Death");
@@ -199,11 +200,9 @@ public class EnemyMove : MonoBehaviour
         if (Physics.Raycast(new Vector3(transform.position.x, 1, transform.position.z), transform.TransformDirection(viewRange()), out seePlayer, chaseZone, ~(1 << 6))/* ||
         Physics.Raycast(new Vector3(transform.position.x, 1, transform.position.z), transform.TransformDirection(Vector3.forward), out seePlayer, chaseZone, ~(1 << 6))*/)
         {
-            Debug.Log(seePlayer.transform.name);
             if (seePlayer.transform.CompareTag("Player"))
             {
                 inSight = true;
-                Debug.Log("Player a la vista");
             }
         }
     }

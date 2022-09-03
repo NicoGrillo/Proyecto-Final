@@ -1,0 +1,17 @@
+Main Menu: 	-Boton PLAY para empezar a jugar
+		-Boton Restart para resetear los valores 
+		del juego (vida, municion)
+		-Boton Quit (Programado para salir del juego, 
+		solo se ve un Debug.Log)
+
+Desde la Escena de Juego se puede presionar ESC 
+para volver a este Main Menu
+
+--------------------------------------------------------------
+
+HUD:		-Indicador de Vida
+		-Indicador de Miedo
+		-Linterna On/Off con nivel de bateria
+		-Piedras con indicador de cantidad
+		-Texto centrado arriba con mensajes 
+		ocacionales

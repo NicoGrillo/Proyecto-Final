@@ -164,7 +164,8 @@ public class PlayerMove : MonoBehaviour
         if (count == 0)
         {
             GameManager.HP -= playerData.DamageTake("Hypno");
-            Debug.Log("Fui hipnotizado, me queda " + GameManager.HP + " de vida");
+            HUDManager.SetHPBar(GameManager.HP);
+            HUDManager.Instance.SetSelectedText("HIPNOTIZADO");
         }
         count += Time.deltaTime;
         if (count >= 1) count = 0;

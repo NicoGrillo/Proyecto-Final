@@ -9,7 +9,7 @@ public class PlayerItemsManager : MonoBehaviour
     //List
     [SerializeField] List<GameObject> rocksList;
     public List<GameObject> RocksList { get => rocksList; set => rocksList = value; }
-    
+
     //Dictionary
     private Dictionary<string, GameObject> itemDirectory;
     public Dictionary<string, GameObject> ItemDirectory { get => itemDirectory; set => itemDirectory = value; }
@@ -51,6 +51,22 @@ public class PlayerItemsManager : MonoBehaviour
     }
 
     //Método que permite equipar la linterna al Player
+    private void FlashlightItem()
+    {
+        if (!FlashlightON)
+        {
+            EquipItem(itemDirectory["Flashlight"]);
+            HUDManager.EnableItem(0,1);
+            FlashlightON = true;
+        }
+        else
+        {
+            DetachItems();
+            HUDManager.EnableItem(0,0);
+            FlashlightON = false;
+        }
+    }
+
     private void EquipItem(GameObject item)
     {
         DetachItems();
@@ -60,26 +76,12 @@ public class PlayerItemsManager : MonoBehaviour
         item.transform.localRotation = Quaternion.Euler(0, 0, 0);
     }
 
-    private void DetachItems()
+        private void DetachItems()
     {
         foreach (Transform child in playerHand)
         {
             child.parent = null;
             child.gameObject.SetActive(false);
-        }
-    }
-
-    private void FlashlightItem()
-    {
-        if (!FlashlightON)
-        {
-            EquipItem(itemDirectory["Flashlight"]);
-            FlashlightON = true;
-        }
-        else
-        {
-            DetachItems();
-            FlashlightON = false;
         }
     }
 }

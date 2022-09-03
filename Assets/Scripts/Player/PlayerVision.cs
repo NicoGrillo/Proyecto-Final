@@ -32,15 +32,16 @@ public class PlayerVision : MonoBehaviour
             if (hit.transform.CompareTag("HypnoEnemy") && canHypno)
             {
                 count += Time.deltaTime;
-                if (count >= 3) //canHypno = true;
+                if (count >= 2) //canHypno = true;
                 {
                     //HUDManager.Instance.SetSelectedText("Hipnotizado");
                     playerMove.IsHypno = true;
                     canHypno = false;
-                    Invoke("delayRecover", 5f);
+                    Invoke("delayRecover", 3f);
                 }
             }
             else count = 0;
+            HUDManager.SetFearBar(count * 10);
         }
     }
 

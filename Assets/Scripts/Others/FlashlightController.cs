@@ -10,6 +10,7 @@ public class FlashlightController : MonoBehaviour
     //---------------------- PROPIEDADES PRIVADAS ----------------------
     private Flashlight_PRO flashlight;
     private float count = 0f;
+    private float lowLevel = 10f;
     private bool withBatteryLeft;
 
     void Start()
@@ -26,6 +27,7 @@ public class FlashlightController : MonoBehaviour
         if (withBatteryLeft) Flashlight();
         else BatteryRecharge();
         LostBatteryLevel();
+        if (GameManager.FLLevel <= 40) LowBatteryFailure();
     }
 
     private void Flashlight()
@@ -46,6 +48,7 @@ public class FlashlightController : MonoBehaviour
         {
             GameManager.FLLevel -= 10;
             count = 0;
+            HUDManager.SetFLBar(GameManager.FLLevel);
         }
     }
 
@@ -57,5 +60,26 @@ public class FlashlightController : MonoBehaviour
             withBatteryLeft = true;
         }
     }
+
+    private void LowBatteryFailure()
+    {
+        if (lowLevel >= 5)
+        {
+            TurnOnOff();
+            Invoke("TurnOnOff", 0.05f);
+            Invoke("TurnOnOff", 0.10f);
+            Invoke("TurnOnOff", 0.15f);
+            Invoke("TurnOnOff", 0.6f);
+            Invoke("TurnOnOff", 1.5f);
+            lowLevel = 0;
+        }
+        lowLevel += Time.deltaTime;
+    }
+
+    private void TurnOnOff()
+    {
+        flashlight.SwitchFailure();
+    }
+
 }
 

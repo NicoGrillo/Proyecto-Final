@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8284458829794387931}
   - component: {fileID: 8284458829794387928}
+  - component: {fileID: 359583269390210878}
   m_Layer: 0
   m_Name: GenericSpawner
   m_TagString: Untagged
@@ -45,5 +46,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spawnGO: {fileID: 0}
-  spawnTime: 1
-  spawnOn: 0
+  spawnTime: 10
+  timePreset: 1
+  spawnOn: 1
+--- !u!65 &359583269390210878
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8284458829794387929}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.5, y: 0.5, z: 0.5}
+  m_Center: {x: 0, y: 0, z: 0}

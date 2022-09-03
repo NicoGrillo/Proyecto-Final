@@ -72,7 +72,16 @@ public class Flashlight_PRO : MonoBehaviour
     }
 
 
+    /// <summary>
+    /// switch, without sound, current state  ON / OFF.
+    /// call this from other scripts.
+    /// </summary>
+    public void SwitchFailure()
+    {
+        is_enabled = !is_enabled;
 
+        Lights.SetActive(is_enabled);
+    }
 
 
     /// <summary>

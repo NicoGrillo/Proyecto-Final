@@ -16,7 +16,6 @@ public class PlayerCollisionController : MonoBehaviour
         playerData = GetComponent<PlayerData>();
         playerItemManager = GetComponent<PlayerItemsManager>();
         beingHit = false;
-        ResetSelectedText();
     }
 
     private void OnTriggerEnter(Collider other)
@@ -25,8 +24,8 @@ public class PlayerCollisionController : MonoBehaviour
         {
             Destroy(other.gameObject);
             GameManager.FLLevel = 100;
+            HUDManager.SetFLBar(GameManager.FLLevel);
             HUDManager.Instance.SetSelectedText("Encontré unas baterias, tengo la linterna completa");
-            Invoke("ResetSelectedText", 3);
         }
 
         if (other.CompareTag("Items"))
@@ -35,10 +34,13 @@ public class PlayerCollisionController : MonoBehaviour
             {
                 playerItemManager.ItemDirectory.Add(other.gameObject.name, other.gameObject);
                 HUDManager.Instance.SetSelectedText("Encontré una linterna. Con F la uso");
-                Invoke("ResetSelectedText", 3);
                 other.gameObject.SetActive(false);
 
-                if (other.gameObject.name == "Flashlight") GameManager.FLLevel = 100;
+                if (other.gameObject.name == "Flashlight")
+                {
+                    GameManager.FLLevel = 100;
+                    HUDManager.SetFLBar(GameManager.FLLevel);
+                }
             }
         }
     }
@@ -62,8 +64,9 @@ public class PlayerCollisionController : MonoBehaviour
             {
                 playerItemManager.RocksList.Add(other.gameObject.transform.parent.gameObject);
                 GameManager.RocksAmmo += 2;
+                HUDManager.EnableItem(1, 0);
+                HUDManager.Instance.ThrowRocksText("x" + GameManager.RocksAmmo);
                 HUDManager.Instance.SetSelectedText("Algunas rocas, creo que puedo usarlas");
-                Invoke("ResetSelectedText", 3);
             }
         }
 
@@ -73,8 +76,8 @@ public class PlayerCollisionController : MonoBehaviour
             {
                 beingHit = true;
                 GameManager.HP -= playerData.DamageTake("Ranged");
+                HUDManager.SetHPBar(GameManager.HP);
                 HUDManager.Instance.SetSelectedText("Fui golpeado por un proyectil, me queda " + GameManager.HP + " de vida");
-                Invoke("ResetSelectedText", 3);
                 Invoke("canHitAgain", 1);
             }
         }
@@ -88,8 +91,8 @@ public class PlayerCollisionController : MonoBehaviour
             {
                 beingHit = true;
                 GameManager.HP -= playerData.DamageTake("Melee");
+                HUDManager.SetHPBar(GameManager.HP);
                 HUDManager.Instance.SetSelectedText("Fui golpeado por enemigo, me queda " + GameManager.HP + " de vida");
-                Invoke("ResetSelectedText", 3);
                 Invoke("canHitAgain", 1);
             }
         }
@@ -98,10 +101,5 @@ public class PlayerCollisionController : MonoBehaviour
     private void canHitAgain()
     {
         beingHit = false;
-    }
-
-    private void ResetSelectedText()
-    {
-        HUDManager.Instance.SetSelectedText("");
     }
 }

@@ -26,10 +26,11 @@ public class SpawnPlayerDetecter : MonoBehaviour
         {
             if (hit.transform.CompareTag("Player") && canSpawn)
             {
-                Debug.Log("Detectó al Player");
-                spawnPoint.SetActive(true);
-                canSpawn = false;
-                Invoke("DesactivatedSpawn", 1);
+                //HUDManager.Instance.SetSelectedText("Bonus activado: Baterias extras");
+                spawnPoint.GetComponent<SpawnerController>().spawnOn = true;
+                //spawnPoint.SetActive(true);
+                //canSpawn = false;
+                //Invoke("DesactivatedSpawn", 1);
             }
         }
     }

@@ -78,7 +78,6 @@ GameObject:
   - component: {fileID: 5277927441038561080}
   - component: {fileID: 6770470996306602963}
   - component: {fileID: 2895831629352894134}
-  - component: {fileID: -2263360062996197710}
   - component: {fileID: 9065647535942286703}
   - component: {fileID: -262089857060031845}
   m_Layer: 3
@@ -216,20 +215,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 29f432d541c5f3b4e88e4be9bd03bd03, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &-2263360062996197710
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3720417672508935716}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8f100fe85ef3cb84f822e0c5a46bb4fc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  flashlightGO: {fileID: 130382, guid: 47af58fd905aee649a315f604914d38e, type: 3}
-  decayTime: 5
 --- !u!114 &9065647535942286703
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -257,8 +242,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 82839d46589214a46bfad3b1a892f5c0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  items: []
   playerHand: {fileID: 8412191186758720174}
+  rocksList: []
 --- !u!1 &5625449764834449522
 GameObject:
   m_ObjectHideFlags: 0
@@ -304,7 +289,7 @@ Light:
   m_Shape: 0
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_Intensity: 1.79
-  m_Range: 1
+  m_Range: 2
   m_SpotAngle: 128
   m_InnerSpotAngle: 21.80208
   m_CookieSize: 10
