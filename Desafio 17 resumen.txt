@@ -1,0 +1,22 @@
+Escena guardada en la carpeta: Scenes/Desafios/Desafio17
+----------------------------------------------------------------------
+
+Scriptable Object usado 1: 	-Carpeta Data/Enemy Melee
+
+Scriptable Object usado 2:	-Carpeta Data/Enemy Ranged
+
+		Codigo:		-Carpeta Scripts/Enemies/
+				Inheritance Enemy/
+				BasicEnemyData
+
+----------------------------------------------------------------------
+
+Caso de Herencia personalizado: -Carpeta Prefab/Enemies/Basic Enemies/
+				1-EnemyMelee
+				2-EnemyRanged
+
+		Codigo:		-Carpeta Scripts/Enemies/
+				Inheritance Enemy/Basic Enemy/
+				1-BasicEnemy
+				2-MeleeAttackEnemy
+				3-RangedAttackEnemy

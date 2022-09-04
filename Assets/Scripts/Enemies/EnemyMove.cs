@@ -137,7 +137,6 @@ public class EnemyMove : MonoBehaviour
                 minimunDistanceToPlayer = 10f;
                 //canAttack = false;
                 break;
-
         }
     }
 
