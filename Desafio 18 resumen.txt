@@ -1,0 +1,20 @@
+Escena guardada en la carpeta: Scenes/Desafios/Desafio18
+----------------------------------------------------------------------
+
+Eventos: 
+
+--OnCantMove: Detiene el movimiento del player por Hypno, por haber 
+perdido o por haber ganado.
+
+--OnStateHypno: Cae hipnotizado al mirar al enemy Hypnotizer.
+
+--OnDamage: Reducción de la vida por recibir daño enemigo.
+
+--OnLose: Al tener 0 de HP o menos, se pierde el juego.
+
+--OnWin: Al cruzar hasta el final de la zona, se escapa y se gana.
+
+--OnTriggerZone: Activa unas rocas detras del Player para que no 
+escape y activa 2 enemies por delante para evitar que gane.
+
+----------------------------------------------------------------------

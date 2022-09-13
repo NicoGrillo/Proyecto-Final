@@ -16,38 +16,58 @@ public class PlayerData : MonoBehaviour
     private int health;
     public int HP { get { return health; } set { health = value; } }
 
-    [SerializeField] private int meleeDamageTake;
-    [SerializeField] private int rangedDamageTake;
-    [SerializeField] private int hypnoDamageTake;
+    //[SerializeField] private int meleeDamageTake;
+    //[SerializeField] private int rangedDamageTake;
+    //[SerializeField] private int hypnoDamageTake;
+    [SerializeField] private bool isActive = true;
+    [SerializeField][Range(1, 60)] int healingTime = 10;
 
-    enum DamageTypes { Melee, Range, Hypno };
+    //enum DamageTypes { Melee, Range, Hypno };
+
+    private void Awake()
+    {
+        PlayerEvents.OnDamage += TakeDamage;
+    }
 
     private void Start()
     {
         HP = 100;
+        StartCoroutine(PassiveHealing());
     }
 
     private void Update()
     {
-        if (HP <= 0) Debug.Log("Estoy muerto");
+        if (HP <= 0)
+        {
+            PlayerEvents.OnLoseCall();
+            Debug.Log(gameObject.name + " llamó al evento OnLose");
+        }
     }
 
-    public int DamageTake(string value)
+    public void TakeDamage(int value)
     {
-        int damage = 0;
-        switch (value)
+        Debug.Log(gameObject.name + " recibe al evento OnDamage");
+        HP -= value;
+        HUDManager.SetHPBar(HP);
+    }
+
+    private void OnDisable()
+    {
+        PlayerEvents.OnDamage -= TakeDamage;
+    }
+
+    IEnumerator PassiveHealing()
+    {
+        while (isActive)
         {
-            case "Melee":
-                damage = meleeDamageTake;
-                break;
-            case "Range":
-                damage = rangedDamageTake;
-                break;
-            case "Hypno":
-                damage = hypnoDamageTake;
-                break;
+            if (health < 100)
+            {
+                //ESPERAR x SEGUNDOS PARA CURAR
+                yield return new WaitForSeconds(healingTime);
+                //CURA 1 HP
+                HP++;
+            }
         }
-        return damage;
     }
 }
 

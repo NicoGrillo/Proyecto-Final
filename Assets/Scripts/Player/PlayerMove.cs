@@ -9,8 +9,9 @@ public class PlayerMove : MonoBehaviour
     [SerializeField][Range(1f, 10f)] private int runForce = 1;
     [SerializeField][Range(1f, 2000f)] private int jumpForce = 40;
     [SerializeField][Range(1f, 200f)] private int MaxSpeed = 5;
-    [SerializeField][Range(0.1f, 10f)] private float rotateSpeed = 1f;
     [SerializeField][Range(1f, 200f)] private int delayNextJump = 1;
+    [SerializeField][Range(0.1f, 10f)] private float rotateSpeed = 1f;
+    [SerializeField][Range(0.5f, 5)] private float hypnoDelay;
     //---------------------- PROPIEDADES PUBLICAS ----------------------
     //---------------------- PROPIEDADES PRIVADAS ----------------------
     private Rigidbody RB;
@@ -25,8 +26,14 @@ public class PlayerMove : MonoBehaviour
     private bool isRunning, isJumping, inDelayJump, isStop;
     private float count;
 
-    private bool isHypno;
-    public bool IsHypno { get => isHypno; set => isHypno = value; }
+    private bool cantMove;
+    public bool CantMove { get => cantMove; set => cantMove = value; }
+
+    private void Awake()
+    {
+        PlayerEvents.OnStateHypno += Hypnotized;
+        PlayerEvents.OnCantMove += PlayerCantMove;
+    }
 
     void Start()
     {
@@ -35,14 +42,15 @@ public class PlayerMove : MonoBehaviour
         playerData = GetComponent<PlayerData>();
         isRunning = false;
         isJumping = false;
-        isHypno = false;
+        cantMove = false;
         count = 0;
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (!isHypno)
+        if (!cantMove)
         {
             RotatePlayer();
             WalkOrRun();
@@ -53,14 +61,10 @@ public class PlayerMove : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (!isHypno)
+        if (!cantMove)
         {
             Move();
             Jump();
-        }
-        else
-        {
-            Hypnotized();
         }
     }
 
@@ -96,7 +100,7 @@ public class PlayerMove : MonoBehaviour
 
     private void RotatePlayer()
     {
-        if (!isHypno)
+        if (!cantMove)
         {
             cameraAxisX += Input.GetAxis("Mouse X");
             Quaternion newRotationX = Quaternion.Euler(0, cameraAxisX * rotateSpeed, 0);
@@ -129,15 +133,15 @@ public class PlayerMove : MonoBehaviour
         bool Right = Input.GetKey(KeyCode.D);
         bool Left = Input.GetKey(KeyCode.A);
 
-        if (Forward) anim.SetBool("Forward",true);
-        if (Back) anim.SetBool("Back",true);
-        if (Right) anim.SetBool("Right",true);
-        if (Left) anim.SetBool("Left",true);
+        if (Forward) anim.SetBool("Forward", true);
+        if (Back) anim.SetBool("Back", true);
+        if (Right) anim.SetBool("Right", true);
+        if (Left) anim.SetBool("Left", true);
 
-        if (!Forward) anim.SetBool("Forward",false);
-        if (!Back) anim.SetBool("Back",false);
-        if (!Right) anim.SetBool("Right",false);
-        if (!Left) anim.SetBool("Left",false);
+        if (!Forward) anim.SetBool("Forward", false);
+        if (!Back) anim.SetBool("Back", false);
+        if (!Right) anim.SetBool("Right", false);
+        if (!Left) anim.SetBool("Left", false);
 
         // Estoy en reposo si se deja de presionar alguna de las teclas de movimiento.
         if (Input.GetKeyUp(KeyCode.W) || Input.GetKeyUp(KeyCode.S) || Input.GetKeyUp(KeyCode.A) || Input.GetKeyUp(KeyCode.D)) isStop = true;
@@ -158,16 +162,39 @@ public class PlayerMove : MonoBehaviour
 
     private void Hypnotized()
     {
-        anim.SetBool("Forward",true);
+        Debug.Log(gameObject.name + " recibe al evento OnStateHypno");
+        cantMove = true;
+
+        anim.SetBool("Forward", true);
         RB.AddForce(transform.TransformDirection(Vector3.forward) * moveForce, ForceMode.Force);
 
         if (count == 0)
         {
-            GameManager.HP -= playerData.DamageTake("Hypno");
-            HUDManager.SetHPBar(GameManager.HP);
+            PlayerEvents.OnDamageCall(transform.GetComponent<PlayerDamageSource>().HypnoDamage);
+            Debug.Log(gameObject.name + " llamó al evento OnDamage");
             HUDManager.Instance.SetSelectedText("HIPNOTIZADO");
         }
         count += Time.deltaTime;
         if (count >= 1) count = 0;
+
+        Invoke("HypnoDelay", hypnoDelay);
+    }
+
+    private void HypnoDelay()
+    {
+        cantMove = false;
+    }
+
+    private void PlayerCantMove()
+    {
+        Debug.Log(gameObject.name + " recibe al evento OnCantMove");
+        cantMove = true;
+        anim.SetTrigger("Idle");
+    }
+
+    private void OnDisable()
+    {
+        PlayerEvents.OnCantMove -= PlayerCantMove;
+        PlayerEvents.OnStateHypno -= Hypnotized;
     }
 }

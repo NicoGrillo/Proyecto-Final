@@ -6,6 +6,7 @@ public class PlayerVision : MonoBehaviour
 {
     [SerializeField] private Transform visionPoint;
     [SerializeField] private float rayDistance = 10f;
+    [SerializeField][Range(1, 10)] private int timeToHypno = 2;
 
     private bool canHypno;
     private PlayerMove playerMove;
@@ -32,10 +33,12 @@ public class PlayerVision : MonoBehaviour
             if (hit.transform.CompareTag("HypnoEnemy") && canHypno)
             {
                 count += Time.deltaTime;
-                if (count >= 2) //canHypno = true;
+                if (count >= timeToHypno) //canHypno = true;
                 {
                     //HUDManager.Instance.SetSelectedText("Hipnotizado");
-                    playerMove.IsHypno = true;
+                    PlayerEvents.OnStateHypnoCall();
+                    Debug.Log(gameObject.name + " llamó al evento OnStateHypno");
+                    //playerMove.CantMove = true;
                     canHypno = false;
                     Invoke("delayRecover", 3f);
                 }
@@ -47,7 +50,7 @@ public class PlayerVision : MonoBehaviour
 
     void delayRecover()
     {
-        playerMove.IsHypno = false;
+        //playerMove.CantMove = false;
         canHypno = true;
     }
 

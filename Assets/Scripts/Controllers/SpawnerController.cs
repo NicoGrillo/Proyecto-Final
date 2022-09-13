@@ -5,8 +5,8 @@ using UnityEngine;
 public class SpawnerController : MonoBehaviour
 {
     [SerializeField] GameObject spawnGO;
-    [SerializeField][Range(1, 30)] int spawnTime;
-    [SerializeField][Range(1, 30)] int timePreset;
+    [SerializeField][Range(1, 600)] int spawnTime;
+    [SerializeField][Range(0, 30)] int timePreset;
     [SerializeField] public bool spawnOn;
 
     private float count;
@@ -18,12 +18,20 @@ public class SpawnerController : MonoBehaviour
 
     void Update()
     {
-        count += Time.deltaTime;
-        if (count >= spawnTime && spawnOn)
+        itsActivated();
+    }
+
+    private void itsActivated()
+    {
+        if (spawnOn)
         {
-            if (spawnOn) Spawn();
-            count = 0;
-            spawnOn = false;
+            count += Time.deltaTime;
+            if (count >= spawnTime)
+            {
+                Spawn();
+                count = 0;
+                spawnOn = false;
+            }
         }
     }
 

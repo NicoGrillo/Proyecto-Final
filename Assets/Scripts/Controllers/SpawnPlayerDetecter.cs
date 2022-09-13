@@ -9,11 +9,6 @@ public class SpawnPlayerDetecter : MonoBehaviour
 
     private bool canSpawn = true;
 
-    void Start()
-    {
-
-    }
-
     private void FixedUpdate()
     {
         SpawnRaycast();
@@ -24,21 +19,8 @@ public class SpawnPlayerDetecter : MonoBehaviour
         RaycastHit hit;
         if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out hit, rayDistance))
         {
-            if (hit.transform.CompareTag("Player") && canSpawn)
-            {
-                //HUDManager.Instance.SetSelectedText("Bonus activado: Baterias extras");
-                spawnPoint.GetComponent<SpawnerController>().spawnOn = true;
-                //spawnPoint.SetActive(true);
-                //canSpawn = false;
-                //Invoke("DesactivatedSpawn", 1);
-            }
+            if (hit.transform.CompareTag("Player") && canSpawn) spawnPoint.GetComponent<SpawnerController>().spawnOn = true;
         }
-    }
-
-    private void DesactivatedSpawn()
-    {
-        spawnPoint.SetActive(false);
-        canSpawn = true;
     }
 
     private void OnDrawGizmos()
@@ -46,6 +28,5 @@ public class SpawnPlayerDetecter : MonoBehaviour
         Gizmos.color = Color.blue;
         Vector3 direction = transform.TransformDirection(Vector3.forward) * rayDistance;
         Gizmos.DrawRay(transform.position, direction);
-        //Gizmos.DrawLine(shootPoint.position, direction); ESTE GIZMO NO AFECTA LA ROTACION
     }
 }

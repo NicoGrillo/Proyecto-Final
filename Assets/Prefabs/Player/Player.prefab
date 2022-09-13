@@ -80,6 +80,7 @@ GameObject:
   - component: {fileID: 2895831629352894134}
   - component: {fileID: 9065647535942286703}
   - component: {fileID: -262089857060031845}
+  - component: {fileID: -6908468293741038163}
   m_Layer: 3
   m_Name: Player
   m_TagString: Player
@@ -122,8 +123,9 @@ MonoBehaviour:
   runForce: 3
   jumpForce: 450
   MaxSpeed: 7
-  rotateSpeed: 2
   delayNextJump: 1
+  rotateSpeed: 2
+  hypnoDelay: 3
 --- !u!114 &3720417672508935743
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -203,6 +205,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   visionPoint: {fileID: 7542784270172779439}
   rayDistance: 10
+  timeToHypno: 2
 --- !u!114 &2895831629352894134
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -227,9 +230,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fb0a464309448cd4499f9ac4b826d981, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  meleeDamageTake: 20
-  rangedDamageTake: 10
-  hypnoDamageTake: 5
+  isActive: 0
+  healingTime: 10
 --- !u!114 &-262089857060031845
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -244,6 +246,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerHand: {fileID: 8412191186758720174}
   rocksList: []
+--- !u!114 &-6908468293741038163
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3720417672508935716}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d827b58730ec8974f85b23cc65603431, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rangedDamage: 15
+  meleeDamage: 25
+  hypnoDamage: 5
 --- !u!1 &5625449764834449522
 GameObject:
   m_ObjectHideFlags: 0

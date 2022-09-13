@@ -43,6 +43,12 @@ public class PlayerCollisionController : MonoBehaviour
                 }
             }
         }
+
+        if (other.CompareTag("WinWall"))
+        {
+            PlayerEvents.OnWinCall();
+            Debug.Log(gameObject.name + " llamó al evento OnWin");
+        }
     }
 
     private void OnCollisionEnter(Collision other)
@@ -75,8 +81,8 @@ public class PlayerCollisionController : MonoBehaviour
             if (!beingHit)
             {
                 beingHit = true;
-                GameManager.HP -= playerData.DamageTake("Ranged");
-                HUDManager.SetHPBar(GameManager.HP);
+                PlayerEvents.OnDamageCall(transform.GetComponent<PlayerDamageSource>().RangedDamage);
+                Debug.Log(gameObject.name + " llamó al evento OnDamage");
                 HUDManager.Instance.SetSelectedText("Fui golpeado por un proyectil, me queda " + GameManager.HP + " de vida");
                 Invoke("canHitAgain", 1);
             }
@@ -90,9 +96,9 @@ public class PlayerCollisionController : MonoBehaviour
             if (!beingHit)
             {
                 beingHit = true;
-                GameManager.HP -= playerData.DamageTake("Melee");
-                HUDManager.SetHPBar(GameManager.HP);
-                HUDManager.Instance.SetSelectedText("Fui golpeado por enemigo, me queda " + GameManager.HP + " de vida");
+                PlayerEvents.OnDamageCall(transform.GetComponent<PlayerDamageSource>().MeleeDamage);
+                Debug.Log(gameObject.name + " llamó al evento OnDamage");
+                //HUDManager.Instance.SetSelectedText("Fui golpeado por un enemigo, me queda " + GameManager.HP + " de vida");
                 Invoke("canHitAgain", 1);
             }
         }

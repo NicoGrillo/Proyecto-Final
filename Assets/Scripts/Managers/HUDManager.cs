@@ -13,6 +13,8 @@ public class HUDManager : MonoBehaviour
     [SerializeField] private Slider fearBar;
     [SerializeField] private Slider flBar;
     [SerializeField] private TMP_Text rocksText;
+    [SerializeField] private GameObject winPanel;
+    [SerializeField] private GameObject losePanel;
 
     private float count;
     private string temporalText;
@@ -25,6 +27,9 @@ public class HUDManager : MonoBehaviour
         if (instance == null)
         {
             instance = this;
+            PlayerEvents.OnWin += WinUI;
+            PlayerEvents.OnLose += LoseUI;
+            //PlayerEvents.OnDamage +=             
         }
         else
         {
@@ -108,5 +113,35 @@ public class HUDManager : MonoBehaviour
     public void ThrowRocksText(string newText)
     {
         rocksText.text = newText;
+    }
+
+    private void WinUI()
+    {
+        Debug.Log(gameObject.name + " recibe al evento OnWin");
+        foreach (Transform child in transform)
+        {
+            child.gameObject.SetActive(false);
+        }
+        winPanel.SetActive(true);
+        PlayerEvents.OnCantMoveCall();
+        Debug.Log(gameObject.name + " llamó al evento OnCantMove");
+    }
+
+    private void LoseUI()
+    {
+        Debug.Log(gameObject.name + " recibe al evento OnLose");
+        foreach (Transform child in transform)
+        {
+            child.gameObject.SetActive(false);
+        }
+        losePanel.SetActive(true);
+        PlayerEvents.OnCantMoveCall();
+        Debug.Log(gameObject.name + " llamó al evento OnCantMove");
+    }
+
+    private void OnDisable()
+    {
+        PlayerEvents.OnWin -= WinUI;
+        PlayerEvents.OnLose -= LoseUI;
     }
 }
