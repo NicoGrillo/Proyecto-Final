@@ -1,0 +1,22 @@
+Escena guardada en la carpeta: Scenes/Desafios/Desafio20
+----------------------------------------------------------------------
+*Todos los objets con los Post-process Volume se encuentran en el Object "-- POSTP --"
+
+Efectos de PP:
+
+-Efecto permanente: GlobalPP con efecto Color Grading activado siempre.
+
+-Volumen 1: HypnoPP con Color Grading con priority mayor a GlobalPP,
+Grain y Vignette configurados. Se activa al mantener la vista en el enemigo Hypno
+y quedar hipnotizado.
+
+-Volumen 2: DamagePP con Vignette con priority Menor a HypnoPP. Se activa cuando se
+recibe daño.
+
+-Ambos volumenes estan activados y desactivados via Script en el object Padre de ambos
+
+-Pide 2 Reflection Probe, pero no le encontre otro uso que no sea para espejar una
+superficie con el material correspondiente. Tengo agregados 2 objetos con estos
+reflection probe (uno en el punto de origen y otro en el punto final de la Scene).
+
+----------------------------------------------------------------------

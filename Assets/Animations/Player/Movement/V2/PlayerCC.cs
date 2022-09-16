@@ -5,19 +5,17 @@ using UnityEngine;
 public class PlayerCC : MonoBehaviour
 {
     //---------------------- PROPIEDADES SERIALIZADAS ----------------------
-    [SerializeField][Range(1f, 2000f)] private int moveForce = 1;
-    [SerializeField][Range(1f, 10f)] private int runForce = 1;
-    [SerializeField][Range(1f, 200f)] private int MaxSpeed = 5;
+    [SerializeField][Range(1f, 500f)] private int moveSpeed = 1;
+    [SerializeField][Range(2f, 750f)] private int runSpeed = 2;
+    //[SerializeField][Range(1f, 200f)] private int MaxSpeed = 5;
     [SerializeField][Range(0.1f, 10f)] private float rotateSpeed = 1f;
     //---------------------- PROPIEDADES PUBLICAS ----------------------
     //---------------------- PROPIEDADES PRIVADAS ----------------------
-    private Rigidbody RB;
+    //private Rigidbody RB;
+    private CharacterController CC;
     private Animator anim;
     private PlayerData playerData;
     private Vector3 playerDirection;
-    private string[,] moveAnim = new string[,]
-    {{"Walk Forward","Walk Back" ,"Walk Right","Walk Left"},
-     {"Run Forward","Run Back" ,"Run Right","Run Left"}};
 
     private float cameraAxisX;
     private float count = 0;
@@ -32,7 +30,7 @@ public class PlayerCC : MonoBehaviour
 
     void Start()
     {
-        RB = GetComponent<Rigidbody>();
+        CC = GetComponent<CharacterController>();
         anim = GetComponent<Animator>();
         playerData = GetComponent<PlayerData>();
         isHypno = false;
@@ -64,11 +62,14 @@ public class PlayerCC : MonoBehaviour
 
     private void Move()
     {
-        if (playerDirection != Vector3.zero && RB.velocity.magnitude < MaxSpeed)
+        if (isRunning) CC.SimpleMove(playerDirection.normalized * runSpeed);
+        else CC.SimpleMove(playerDirection.normalized * moveSpeed);
+
+        /*if (playerDirection != Vector3.zero && RB.velocity.magnitude < MaxSpeed)
         {
             if (isRunning) RB.AddForce(transform.TransformDirection(playerDirection) * moveForce * runForce, ForceMode.Force);
             else RB.AddForce(transform.TransformDirection(playerDirection) * moveForce, ForceMode.Force);
-        }
+        }*/
     }
 
     private void RotatePlayer()
@@ -96,14 +97,14 @@ public class PlayerCC : MonoBehaviour
     private void AnimPlayer()
     {
         //Variables para las Animaciones
-        yMovement();
-        xMovement();
+        yAnimMovement();
+        xAnimMovement();
 
         anim.SetFloat("YSpeed", yMove);
         anim.SetFloat("XSpeed", xMove);
     }
 
-    private void yMovement()
+    private void yAnimMovement()
     {
         bool Forward = Input.GetKey(KeyCode.W);
         bool Back = Input.GetKey(KeyCode.S);
@@ -138,7 +139,7 @@ public class PlayerCC : MonoBehaviour
         yMove = yCountMove;
     }
 
-    private void xMovement()
+    private void xAnimMovement()
     {
         bool Right = Input.GetKey(KeyCode.D);
         bool Left = Input.GetKey(KeyCode.A);
@@ -180,8 +181,8 @@ public class PlayerCC : MonoBehaviour
 
     private void Hypnotized()
     {
-        anim.SetBool("Forward", true);
-        RB.AddForce(transform.TransformDirection(Vector3.forward) * moveForce, ForceMode.Force);
+        anim.SetFloat("YSpeed", 0.5f);
+        CC.SimpleMove(playerDirection.normalized * runSpeed);
 
         if (count == 0)
         {

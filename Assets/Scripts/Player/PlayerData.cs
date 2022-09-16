@@ -19,6 +19,7 @@ public class PlayerData : MonoBehaviour
     //[SerializeField] private int meleeDamageTake;
     //[SerializeField] private int rangedDamageTake;
     //[SerializeField] private int hypnoDamageTake;
+
     [SerializeField] private bool isActive = true;
     [SerializeField][Range(1, 60)] int healingTime = 10;
 
@@ -58,7 +59,7 @@ public class PlayerData : MonoBehaviour
 
     IEnumerator PassiveHealing()
     {
-        while (isActive)
+        if (isActive)
         {
             if (health < 100)
             {
@@ -70,5 +71,3 @@ public class PlayerData : MonoBehaviour
         }
     }
 }
-
-

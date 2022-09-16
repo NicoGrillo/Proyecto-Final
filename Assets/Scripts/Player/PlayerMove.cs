@@ -18,13 +18,9 @@ public class PlayerMove : MonoBehaviour
     private Animator anim; //animRun;
     private PlayerData playerData;
     private Vector3 playerDirection;
-    private string[,] moveAnim = new string[,]
-    {{"Walk Forward","Walk Back" ,"Walk Right","Walk Left"},
-     {"Run Forward","Run Back" ,"Run Right","Run Left"}};
 
     private float cameraAxisX;
     private bool isRunning, isJumping, inDelayJump, isStop;
-    private float count;
 
     private bool cantMove;
     public bool CantMove { get => cantMove; set => cantMove = value; }
@@ -43,8 +39,6 @@ public class PlayerMove : MonoBehaviour
         isRunning = false;
         isJumping = false;
         cantMove = false;
-        count = 0;
-
     }
 
     // Update is called once per frame
@@ -164,18 +158,12 @@ public class PlayerMove : MonoBehaviour
     {
         Debug.Log(gameObject.name + " recibe al evento OnStateHypno");
         cantMove = true;
+        anim.SetTrigger("Idle");
 
-        anim.SetBool("Forward", true);
-        RB.AddForce(transform.TransformDirection(Vector3.forward) * moveForce, ForceMode.Force);
+        StartCoroutine(HypnoState());
 
-        if (count == 0)
-        {
-            PlayerEvents.OnDamageCall(transform.GetComponent<PlayerDamageSource>().HypnoDamage);
-            Debug.Log(gameObject.name + " llamó al evento OnDamage");
-            HUDManager.Instance.SetSelectedText("HIPNOTIZADO");
-        }
-        count += Time.deltaTime;
-        if (count >= 1) count = 0;
+        Debug.Log(gameObject.name + " llamó al evento OnDamage");
+        HUDManager.Instance.SetSelectedText("HIPNOTIZADO");
 
         Invoke("HypnoDelay", hypnoDelay);
     }
@@ -196,5 +184,14 @@ public class PlayerMove : MonoBehaviour
     {
         PlayerEvents.OnCantMove -= PlayerCantMove;
         PlayerEvents.OnStateHypno -= Hypnotized;
+    }
+
+    IEnumerator HypnoState()
+    {
+        PlayerEvents.OnDamageCall(transform.GetComponent<PlayerDamageSource>().HypnoDamage);
+        yield return new WaitForSeconds(1);
+        PlayerEvents.OnDamageCall(transform.GetComponent<PlayerDamageSource>().HypnoDamage);
+        yield return new WaitForSeconds(1);
+        PlayerEvents.OnDamageCall(transform.GetComponent<PlayerDamageSource>().HypnoDamage);
     }
 }
