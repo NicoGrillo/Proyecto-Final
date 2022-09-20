@@ -16,7 +16,7 @@ public class FlashlightController : MonoBehaviour
     void Start()
     {
         flashlight = GetComponent<Flashlight_PRO>();
-        flashlight.Switch();
+        //flashlight.Switch();
         withBatteryLeft = true;
         flashlight.Change_Intensivity(GameManager.FLLevel);
     }
@@ -27,7 +27,15 @@ public class FlashlightController : MonoBehaviour
         if (withBatteryLeft) Flashlight();
         else BatteryRecharge();
         LostBatteryLevel();
-        if (GameManager.FLLevel <= 40) LowBatteryFailure();
+        if (GameManager.FLLevel <= 40)
+        {
+            if (lowLevel >= 5)
+            {
+                StartCoroutine(LowBatteryFailure());
+                lowLevel = 0;
+            }
+            lowLevel += Time.deltaTime;
+        }
     }
 
     private void Flashlight()
@@ -61,25 +69,19 @@ public class FlashlightController : MonoBehaviour
         }
     }
 
-    private void LowBatteryFailure()
-    {
-        if (lowLevel >= 5)
-        {
-            TurnOnOff();
-            Invoke("TurnOnOff", 0.05f);
-            Invoke("TurnOnOff", 0.10f);
-            Invoke("TurnOnOff", 0.15f);
-            Invoke("TurnOnOff", 0.6f);
-            Invoke("TurnOnOff", 1.5f);
-            lowLevel = 0;
-        }
-        lowLevel += Time.deltaTime;
-    }
-
-    private void TurnOnOff()
+    IEnumerator LowBatteryFailure()
     {
         flashlight.SwitchFailure();
+        yield return new WaitForSeconds(0.05f);
+        flashlight.SwitchFailure();
+        yield return new WaitForSeconds(0.05f);
+        flashlight.SwitchFailure();
+        yield return new WaitForSeconds(0.05f);
+        flashlight.SwitchFailure();
+        yield return new WaitForSeconds(0.45f);
+        flashlight.SwitchFailure();
+        yield return new WaitForSeconds(0.9f);
+        flashlight.SwitchFailure();
     }
-
 }
 

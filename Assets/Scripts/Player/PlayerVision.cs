@@ -6,17 +6,20 @@ public class PlayerVision : MonoBehaviour
 {
     [SerializeField] private Transform visionPoint;
     [SerializeField] private float rayDistance = 10f;
-    [SerializeField][Range(1, 10)] private int timeToHypno = 2;
+    [SerializeField][Range(1, 50)] private int lvlToHypno = 5;
 
-    private bool canHypno;
+
     private PlayerMove playerMove;
-    private float count;
+    private PlayerData playerData;
+    private bool canHypno;
+    //private float count=0;
+    private float xValue = -1f;
 
     void Start()
     {
         canHypno = true;
-        count = 0;
         playerMove = GetComponent<PlayerMove>();
+        playerData = GetComponent<PlayerData>();
     }
 
     // Update is called once per frame
@@ -28,37 +31,41 @@ public class PlayerVision : MonoBehaviour
     private void VisionRaycast()
     {
         RaycastHit hit;
-        if (Physics.Raycast(visionPoint.position, visionPoint.TransformDirection(Vector3.forward), out hit, rayDistance))
+        //if (Physics.Raycast(visionPoint.position, visionPoint.TransformDirection(Vector3.forward), out hit, rayDistance))
+        if (Physics.Raycast(visionPoint.position, transform.TransformDirection(viewRange()), out hit, rayDistance))
         {
             if (hit.transform.CompareTag("HypnoEnemy") && canHypno)
             {
-                count += Time.deltaTime;
-                if (count >= timeToHypno) //canHypno = true;
+                playerData.FearLVL++;
+                HUDManager.SetFearBar((playerData.FearLVL / lvlToHypno) * 20);
+                if (playerData.FearLVL >= lvlToHypno)
                 {
-                    //HUDManager.Instance.SetSelectedText("Hipnotizado");
                     PlayerEvents.OnStateHypnoCall();
-                    Debug.Log(gameObject.name + " llamó al evento OnStateHypno");
-                    //playerMove.CantMove = true;
                     canHypno = false;
-                    Invoke("delayRecover", 3f);
+                    Invoke("delayRecover", lvlToHypno + 1);
                 }
             }
-            else count = 0;
-            HUDManager.SetFearBar(count * 10);
         }
+    }
+
+    private Vector3 viewRange()
+    {
+        Vector3 value;
+        xValue += .1f;
+        value = new Vector3(xValue, 0, 1);
+        if (xValue > .5) xValue = -.5f;
+        return value;
     }
 
     void delayRecover()
     {
-        //playerMove.CantMove = false;
         canHypno = true;
     }
 
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.blue;
-        Vector3 direction = visionPoint.TransformDirection(Vector3.forward) * rayDistance;
+        Vector3 direction = visionPoint.TransformDirection(viewRange()) * rayDistance;
         Gizmos.DrawRay(visionPoint.position, direction);
-        //Gizmos.DrawLine(shootPoint.position, direction); ESTE GIZMO NO AFECTA LA ROTACION
     }
 }

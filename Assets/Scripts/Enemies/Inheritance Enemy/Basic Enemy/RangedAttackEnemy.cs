@@ -22,9 +22,4 @@ public class RangedAttackEnemy : MeleeAttackEnemy
     {
         Instantiate(enemyAmmoType, enemyThrowPoint.transform.position, transform.rotation);
     }
-
-    protected override void SetColliders(bool value)
-    {
-        transform.GetComponent<CapsuleCollider>().enabled = value;
-    }
 }

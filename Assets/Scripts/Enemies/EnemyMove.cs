@@ -212,11 +212,6 @@ public class EnemyMove : MonoBehaviour
         xValue += .1f;
         value = new Vector3(xValue, 0, 1);
         if (xValue > 1) xValue = -1f;
-
-        /*if (boolean) value = new Vector3(-1, 0, 1);
-        else value = new Vector3(1, 0, 1);
-        boolean = !boolean;*/
-
         return value;
     }
 
@@ -225,9 +220,6 @@ public class EnemyMove : MonoBehaviour
         Gizmos.color = Color.blue;
         Vector3 direction = transform.TransformDirection(viewRange()) * chaseZone;
         Gizmos.DrawRay(transform.position, direction);
-        /*direction = transform.TransformDirection(Vector3.forward) * chaseZone;
-        Gizmos.DrawRay(transform.position, direction);*/
-        //Gizmos.DrawLine(shootPoint.position, direction); ESTE GIZMO NO AFECTA LA ROTACION
     }
 
 }

@@ -61,6 +61,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 199624, guid: 47af58fd905aee649a315f604914d38e, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 416254, guid: 47af58fd905aee649a315f604914d38e, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -132,6 +136,14 @@ PrefabInstance:
     - target: {fileID: 10869704, guid: 47af58fd905aee649a315f604914d38e, type: 3}
       propertyPath: m_InnerSpotAngle
       value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 19837060, guid: 47af58fd905aee649a315f604914d38e, type: 3}
+      propertyPath: InitialModule.startSizeY.minMaxState
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 19837060, guid: 47af58fd905aee649a315f604914d38e, type: 3}
+      propertyPath: InitialModule.startSizeZ.minMaxState
+      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 47af58fd905aee649a315f604914d38e, type: 3}

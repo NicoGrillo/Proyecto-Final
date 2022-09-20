@@ -1,0 +1,24 @@
+Escena guardada en la carpeta: Scenes/LEVEL0
+----------------------------------------------------------------------
+Todos los Objets necesarios para otras escenas son Prefabs.
+
+Casos Temporizadores: 
+-Healing pasivo con el tiempo
+-Fallo de luz en linterna y de lamparas
+-Patrullaje de enemies
+-Desgaste de la bateria de la linterna
+
+Sistema de camara: -primera persona
+
+Calculos vectoriales para los movimientos de la camara del Player.
+
+Caso Switch: (-- Controllers --/SunController)
+-Tecla F1, F2 y F3 cambian la luz INGAME mediante un Switch.
+
+Tipos de colisiones: 
+-Con Objetos colectibles (Linterna, Baterias, Nota) 
+-Con Enemies (Daño Melee, proyectil enemigo)
+-Con lineas invisibles de Victoria ubicadas en los limites de la ruta. 
+
+Animaciones tanto para Player como para Enemies.
+----------------------------------------------------------------------

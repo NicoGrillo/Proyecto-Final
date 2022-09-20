@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 7490380720549016461}
   - component: {fileID: 953722912}
   - component: {fileID: 8683415363467021723}
-  - component: {fileID: 3794060864123030396}
   m_Layer: 0
   m_Name: EnemyMelee
   m_TagString: Enemy
@@ -81,19 +80,6 @@ MonoBehaviour:
   basicEnemyData: {fileID: 11400000, guid: bd4d031217322dd44a8cc6435f44ffeb, type: 2}
   player: {fileID: 0}
   enemyAnimation: {fileID: 636601660294630475}
---- !u!65 &3794060864123030396
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7490380720549016458}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 0.1, y: 0.1, z: 0.1}
-  m_Center: {x: 0, y: 1, z: 0.6}
 --- !u!1001 &1249674021493376920
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -165,6 +151,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Avatar
       objectReference: {fileID: 0}
+    - target: {fileID: 1733107618574920399, guid: b785a70b3953db645ade3021d649497e, type: 3}
+      propertyPath: m_TagString
+      value: Enemy
+      objectReference: {fileID: 0}
     - target: {fileID: 1838051597862341587, guid: b785a70b3953db645ade3021d649497e, type: 3}
       propertyPath: m_Animation
       value: 
@@ -181,3 +171,21 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 1729793524033543031, guid: b785a70b3953db645ade3021d649497e, type: 3}
   m_PrefabInstance: {fileID: 1249674021493376920}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &674000441306770775 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1733107618574920399, guid: b785a70b3953db645ade3021d649497e, type: 3}
+  m_PrefabInstance: {fileID: 1249674021493376920}
+  m_PrefabAsset: {fileID: 0}
+--- !u!65 &2598284723733246451
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 674000441306770775}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.1, y: 0.1, z: 0.1}
+  m_Center: {x: 0, y: 0, z: 0}

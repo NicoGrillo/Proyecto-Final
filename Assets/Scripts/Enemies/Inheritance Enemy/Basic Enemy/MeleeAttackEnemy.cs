@@ -85,12 +85,6 @@ public class MeleeAttackEnemy : BasicEnemy
         if (!inSight) base.Patrol();
     }
 
-    protected override void SetColliders(bool value)
-    {
-        base.SetColliders(value);
-        transform.GetComponent<BoxCollider>().enabled = value;
-    }
-
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.blue;

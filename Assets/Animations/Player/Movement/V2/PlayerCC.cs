@@ -7,41 +7,51 @@ public class PlayerCC : MonoBehaviour
     //---------------------- PROPIEDADES SERIALIZADAS ----------------------
     [SerializeField][Range(1f, 500f)] private int moveSpeed = 1;
     [SerializeField][Range(2f, 750f)] private int runSpeed = 2;
-    //[SerializeField][Range(1f, 200f)] private int MaxSpeed = 5;
     [SerializeField][Range(0.1f, 10f)] private float rotateSpeed = 1f;
+    [SerializeField][Range(0.5f, 5)] private float hypnoDelay = 1;
+    [SerializeField] private new Transform camera;
+    [SerializeField] private GameObject sunController;
     //---------------------- PROPIEDADES PUBLICAS ----------------------
     //---------------------- PROPIEDADES PRIVADAS ----------------------
-    //private Rigidbody RB;
     private CharacterController CC;
     private Animator anim;
     private PlayerData playerData;
+    private RocksThrow rocksThrow;
     private Vector3 playerDirection;
 
     private float cameraAxisX;
-    private float count = 0;
+    private float cameraAxisY;
     private float xCountMove = 0;
     private float yCountMove = 0;
     private float xMove = 0;
     private float yMove = 0;
+
     private bool isRunning = false;
 
-    private bool isHypno;
-    public bool IsHypno { get => isHypno; set => isHypno = value; }
+    private bool cantMove;
+    public bool IsHypno { get => cantMove; set => cantMove = value; }
+
+    private void Awake()
+    {
+        PlayerEvents.OnStateHypno += Hypnotized;
+        PlayerEvents.OnCantMove += PlayerMove;
+    }
 
     void Start()
     {
+        Cursor.lockState = CursorLockMode.Locked;
         CC = GetComponent<CharacterController>();
         anim = GetComponent<Animator>();
         playerData = GetComponent<PlayerData>();
-        isHypno = false;
+        rocksThrow = GetComponent<RocksThrow>();
+        cantMove = false;
     }
 
-    // Update is called once per frame
     void Update()
     {
-        if (!isHypno)
+        if (!cantMove)
         {
-            RotatePlayer();
+            CameraPlayer();
             WalkOrRun();
             AnimPlayer();
             InputsPlayer();
@@ -50,33 +60,35 @@ public class PlayerCC : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (!isHypno)
+        if (!cantMove)
         {
             Move();
-        }
-        else
-        {
-            Hypnotized();
         }
     }
 
     private void Move()
     {
-        if (isRunning) CC.SimpleMove(playerDirection.normalized * runSpeed);
-        else CC.SimpleMove(playerDirection.normalized * moveSpeed);
-
-        /*if (playerDirection != Vector3.zero && RB.velocity.magnitude < MaxSpeed)
-        {
-            if (isRunning) RB.AddForce(transform.TransformDirection(playerDirection) * moveForce * runForce, ForceMode.Force);
-            else RB.AddForce(transform.TransformDirection(playerDirection) * moveForce, ForceMode.Force);
-        }*/
+        if (isRunning) CC.SimpleMove(transform.TransformDirection(playerDirection) * runSpeed);
+        else CC.SimpleMove(transform.TransformDirection(playerDirection) * moveSpeed);
     }
 
-    private void RotatePlayer()
+    private void CameraPlayer()
     {
-        cameraAxisX += Input.GetAxis("Mouse X");
-        Quaternion newRotationX = Quaternion.Euler(0, cameraAxisX * rotateSpeed, 0);
-        transform.rotation = Quaternion.Lerp(transform.rotation, newRotationX, 2.5f * Time.deltaTime);
+        cameraAxisX = Input.GetAxis("Mouse X");
+        cameraAxisY = Input.GetAxis("Mouse Y");
+
+        if (cameraAxisX != 0)
+        {
+            transform.Rotate(Vector3.up * cameraAxisX * rotateSpeed);
+        }
+
+        if (cameraAxisY != 0)
+        {
+            float angle = (camera.localEulerAngles.x - cameraAxisY * rotateSpeed + 360) % 360;
+            if (angle > 180) angle -= 360;
+            angle = Mathf.Clamp(angle, -25f, 35f);
+            camera.localEulerAngles = Vector3.right * angle;
+        }
     }
 
     private void WalkOrRun()
@@ -92,6 +104,11 @@ public class PlayerCC : MonoBehaviour
         if (Input.GetKey(KeyCode.A)) playerDirection += Vector3.left;
         if (Input.GetKey(KeyCode.D)) playerDirection += Vector3.right;
 
+        if (Input.GetMouseButtonDown(0)) rocksThrow.Throw();
+
+        if (Input.GetKeyDown(KeyCode.F1)) sunController.GetComponent<SunController>().selectCase(1);
+        if (Input.GetKeyDown(KeyCode.F2)) sunController.GetComponent<SunController>().selectCase(2);
+        if (Input.GetKeyDown(KeyCode.F3)) sunController.GetComponent<SunController>().selectCase(3);
     }
 
     private void AnimPlayer()
@@ -174,22 +191,39 @@ public class PlayerCC : MonoBehaviour
         xMove = xCountMove;
     }
 
-    private bool IsAnimation(string animName)
-    {
-        return anim.GetCurrentAnimatorStateInfo(0).IsName(animName);
-    }
-
     private void Hypnotized()
     {
-        anim.SetFloat("YSpeed", 0.5f);
-        CC.SimpleMove(playerDirection.normalized * runSpeed);
+        cantMove = true;
 
-        if (count == 0)
-        {
-            PlayerEvents.OnDamageCall(transform.GetComponent<PlayerDamageSource>().HypnoDamage);
-            HUDManager.Instance.SetSelectedText("HIPNOTIZADO");
-        }
-        count += Time.deltaTime;
-        if (count >= 1) count = 0;
+        StartCoroutine(HypnoState());
+
+        Invoke("HypnoDelay", hypnoDelay);
+    }
+
+    private void HypnoDelay()
+    {
+        playerData.FearLVL = 0;
+        HUDManager.SetFearBar(0);
+        cantMove = false;
+    }
+
+    private void PlayerMove(bool value)
+    {
+        cantMove = value;
+    }
+
+    private void OnDisable()
+    {
+        PlayerEvents.OnCantMove -= PlayerMove;
+        PlayerEvents.OnStateHypno -= Hypnotized;
+    }
+
+    IEnumerator HypnoState()
+    {
+        PlayerEvents.OnDamageCall(transform.GetComponent<PlayerDamageSource>().HypnoDamage);
+        yield return new WaitForSeconds(1);
+        PlayerEvents.OnDamageCall(transform.GetComponent<PlayerDamageSource>().HypnoDamage);
+        yield return new WaitForSeconds(1);
+        PlayerEvents.OnDamageCall(transform.GetComponent<PlayerDamageSource>().HypnoDamage);
     }
 }

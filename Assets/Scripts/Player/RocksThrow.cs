@@ -18,12 +18,7 @@ public class RocksThrow : MonoBehaviour
         canThrow = true;
     }
 
-    void Update()
-    {
-        if (Input.GetMouseButtonDown(0)) Throw();
-    }
-
-    private void Throw()
+    public void Throw()
     {
         if (canThrow && GameManager.RocksAmmo > 0)
         {

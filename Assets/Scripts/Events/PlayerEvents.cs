@@ -7,7 +7,7 @@ public class PlayerEvents
 {
     public static event Action OnWin;
     public static event Action OnLose;
-    public static event Action OnCantMove;
+    public static event Action<bool> OnCantMove;
     public static event Action OnStateHypno;
     public static event Action<int> OnHeal;
     public static event Action<int> OnDamage;
@@ -16,7 +16,7 @@ public class PlayerEvents
 
     public static void OnWinCall() { OnWin?.Invoke(); }
     public static void OnLoseCall() { OnLose?.Invoke(); }
-    public static void OnCantMoveCall() { OnCantMove?.Invoke(); }
+    public static void OnCantMoveCall(bool value) { OnCantMove?.Invoke(value); }
     public static void OnStateHypnoCall() { OnStateHypno?.Invoke(); }
     public static void OnHealCall(int hp) { OnHeal?.Invoke(hp); }
     public static void OnDamageCall(int hp) { OnDamage?.Invoke(hp); }

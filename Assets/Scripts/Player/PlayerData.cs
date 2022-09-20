@@ -16,12 +16,16 @@ public class PlayerData : MonoBehaviour
     private int health;
     public int HP { get { return health; } set { health = value; } }
 
+    private float fear;
+    public float FearLVL { get { return fear; } set { fear = value; } }
+
     //[SerializeField] private int meleeDamageTake;
     //[SerializeField] private int rangedDamageTake;
     //[SerializeField] private int hypnoDamageTake;
 
     [SerializeField] private bool isActive = true;
     [SerializeField][Range(1, 60)] int healingTime = 10;
+    [SerializeField][Range(1, 60)] int fearRecoverTime = 2;
 
     //enum DamageTypes { Melee, Range, Hypno };
 
@@ -41,13 +45,11 @@ public class PlayerData : MonoBehaviour
         if (HP <= 0)
         {
             PlayerEvents.OnLoseCall();
-            Debug.Log(gameObject.name + " llamó al evento OnLose");
         }
     }
 
     public void TakeDamage(int value)
     {
-        Debug.Log(gameObject.name + " recibe al evento OnDamage");
         HP -= value;
         HUDManager.SetHPBar(HP);
     }
@@ -67,6 +69,19 @@ public class PlayerData : MonoBehaviour
                 yield return new WaitForSeconds(healingTime);
                 //CURA 1 HP
                 HP++;
+            }
+        }
+    }
+    IEnumerator PassiveFearRecover()
+    {
+        if (isActive)
+        {
+            if (fear > 0)
+            {
+                //ESPERAR x SEGUNDOS PARA CURAR
+                yield return new WaitForSeconds(fearRecoverTime);
+                //CURA 1 HP
+                fear--;
             }
         }
     }

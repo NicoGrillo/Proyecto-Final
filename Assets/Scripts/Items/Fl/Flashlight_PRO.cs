@@ -104,5 +104,16 @@ public class Flashlight_PRO : MonoBehaviour
         }
     }
 
+    private void OnEnable()
+    {
+        if (switch_sound != null)
+            switch_sound.Play();
+    }
+
+    private void OnDisable()
+    {
+        if (switch_sound != null)
+            switch_sound.Play();
+    }
 
 }

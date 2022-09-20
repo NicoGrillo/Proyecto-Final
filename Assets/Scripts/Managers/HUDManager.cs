@@ -15,6 +15,7 @@ public class HUDManager : MonoBehaviour
     [SerializeField] private TMP_Text rocksText;
     [SerializeField] private GameObject winPanel;
     [SerializeField] private GameObject losePanel;
+    [SerializeField] public GameObject textPanel;
 
     private float count;
     private string temporalText;
@@ -29,7 +30,6 @@ public class HUDManager : MonoBehaviour
             instance = this;
             PlayerEvents.OnWin += WinUI;
             PlayerEvents.OnLose += LoseUI;
-            //PlayerEvents.OnDamage +=             
         }
         else
         {
@@ -40,6 +40,7 @@ public class HUDManager : MonoBehaviour
     private void Start()
     {
         selectedText.text = "";
+        textPanel.SetActive(false);
     }
 
     private void Update()
@@ -115,16 +116,27 @@ public class HUDManager : MonoBehaviour
         rocksText.text = newText;
     }
 
+    public void enableTextPanel(bool value)
+    {
+        textPanel.SetActive(value);
+        PlayerEvents.OnCantMoveCall(value);
+        Cursor.lockState = CursorLockMode.Confined;
+    }
+
+    public void onCancelTextPanelButton()
+    {
+        textPanel.SetActive(false);
+        PlayerEvents.OnCantMoveCall(false);
+    }
+
     private void WinUI()
     {
-        Debug.Log(gameObject.name + " recibe al evento OnWin");
         foreach (Transform child in transform)
         {
             child.gameObject.SetActive(false);
         }
         winPanel.SetActive(true);
-        PlayerEvents.OnCantMoveCall();
-        Debug.Log(gameObject.name + " llamó al evento OnCantMove");
+        PlayerEvents.OnCantMoveCall(true);
     }
 
     private void LoseUI()
@@ -135,7 +147,7 @@ public class HUDManager : MonoBehaviour
             child.gameObject.SetActive(false);
         }
         losePanel.SetActive(true);
-        PlayerEvents.OnCantMoveCall();
+        PlayerEvents.OnCantMoveCall(true);
         Debug.Log(gameObject.name + " llamó al evento OnCantMove");
     }
 

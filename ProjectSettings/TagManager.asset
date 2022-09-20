@@ -11,6 +11,7 @@ TagManager:
   - HypnoEnemy
   - Items
   - WinWall
+  - EnemyProyectile
   layers:
   - Default
   - TransparentFX

@@ -28,11 +28,12 @@ public class PlayerMove : MonoBehaviour
     private void Awake()
     {
         PlayerEvents.OnStateHypno += Hypnotized;
-        PlayerEvents.OnCantMove += PlayerCantMove;
+        PlayerEvents.OnCantMove += PlayerMovement;
     }
 
     void Start()
     {
+
         RB = GetComponent<Rigidbody>();
         anim = GetComponent<Animator>();
         playerData = GetComponent<PlayerData>();
@@ -156,7 +157,8 @@ public class PlayerMove : MonoBehaviour
 
     private void Hypnotized()
     {
-        Debug.Log(gameObject.name + " recibe al evento OnStateHypno");
+        playerData.FearLVL = 0;
+        HUDManager.SetFearBar(0);
         cantMove = true;
         anim.SetTrigger("Idle");
 
@@ -173,16 +175,15 @@ public class PlayerMove : MonoBehaviour
         cantMove = false;
     }
 
-    private void PlayerCantMove()
+    private void PlayerMovement(bool value)
     {
-        Debug.Log(gameObject.name + " recibe al evento OnCantMove");
-        cantMove = true;
+        cantMove = value;
         anim.SetTrigger("Idle");
     }
 
     private void OnDisable()
     {
-        PlayerEvents.OnCantMove -= PlayerCantMove;
+        PlayerEvents.OnCantMove -= PlayerMovement;
         PlayerEvents.OnStateHypno -= Hypnotized;
     }
 

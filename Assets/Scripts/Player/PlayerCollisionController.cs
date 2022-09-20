@@ -20,6 +20,16 @@ public class PlayerCollisionController : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        if (other.gameObject.CompareTag("Enemy"))
+        {
+            if (!beingHit)
+            {
+                beingHit = true;
+                PlayerEvents.OnDamageCall(transform.GetComponent<PlayerDamageSource>().MeleeDamage);
+                Invoke("canHitAgain", 1);
+            }
+        }
+
         if (other.CompareTag("Battery"))
         {
             Destroy(other.gameObject);
@@ -33,26 +43,34 @@ public class PlayerCollisionController : MonoBehaviour
             if (!playerItemManager.ItemDirectory.ContainsKey(other.gameObject.name))
             {
                 playerItemManager.ItemDirectory.Add(other.gameObject.name, other.gameObject);
-                HUDManager.Instance.SetSelectedText("Encontré una linterna. Con F la uso");
-                other.gameObject.SetActive(false);
 
                 if (other.gameObject.name == "Flashlight")
                 {
+                    other.gameObject.GetComponentInChildren<Flashlight_PRO>().Switch();
+                    HUDManager.Instance.SetSelectedText("Encontré una linterna. Con F la uso");
                     GameManager.FLLevel = 100;
                     HUDManager.SetFLBar(GameManager.FLLevel);
                 }
+                other.gameObject.SetActive(false);
+            }
+
+            if (other.gameObject.name == "StartNote")
+            {
+                Destroy(other.gameObject);
+                HUDManager.Instance.enableTextPanel(true);
+                StartCoroutine(DisablePanel());
             }
         }
 
         if (other.CompareTag("WinWall"))
         {
             PlayerEvents.OnWinCall();
-            Debug.Log(gameObject.name + " llamó al evento OnWin");
         }
     }
 
-    private void OnCollisionEnter(Collision other)
+    private void OnControllerColliderHit(ControllerColliderHit other)
     {
+        if (other.gameObject.CompareTag("Enemy")) enemyCollision();
         if (other.gameObject.CompareTag("Rocks"))
         {
             bool repeated = false;
@@ -60,12 +78,7 @@ public class PlayerCollisionController : MonoBehaviour
             {
                 if (other.gameObject.transform.parent.name == rocks.name) repeated = true;
             }
-            /*
-            for (int i = 0; i < playerItemManager.RocksList.Count; i++)
-            {
-                if (other.gameObject.transform.parent.name == playerItemManager.RocksList[i].name) repeated = true;
-            }
-            */
+
             if (!repeated)
             {
                 playerItemManager.RocksList.Add(other.gameObject.transform.parent.gameObject);
@@ -76,29 +89,12 @@ public class PlayerCollisionController : MonoBehaviour
             }
         }
 
-        if (other.gameObject.CompareTag("ThrowRock"))
+        if (other.gameObject.CompareTag("EnemyProyectile"))
         {
             if (!beingHit)
             {
                 beingHit = true;
                 PlayerEvents.OnDamageCall(transform.GetComponent<PlayerDamageSource>().RangedDamage);
-                Debug.Log(gameObject.name + " llamó al evento OnDamage");
-                HUDManager.Instance.SetSelectedText("Fui golpeado por un proyectil, me queda " + GameManager.HP + " de vida");
-                Invoke("canHitAgain", 1);
-            }
-        }
-    }
-
-    private void OnCollisionStay(Collision other)
-    {
-        if (other.gameObject.CompareTag("Enemy"))
-        {
-            if (!beingHit)
-            {
-                beingHit = true;
-                PlayerEvents.OnDamageCall(transform.GetComponent<PlayerDamageSource>().MeleeDamage);
-                Debug.Log(gameObject.name + " llamó al evento OnDamage");
-                //HUDManager.Instance.SetSelectedText("Fui golpeado por un enemigo, me queda " + GameManager.HP + " de vida");
                 Invoke("canHitAgain", 1);
             }
         }
@@ -108,4 +104,21 @@ public class PlayerCollisionController : MonoBehaviour
     {
         beingHit = false;
     }
+
+    private void enemyCollision()
+    {
+        if (!beingHit)
+        {
+            beingHit = true;
+            PlayerEvents.OnDamageCall(transform.GetComponent<PlayerDamageSource>().MeleeDamage);
+            Invoke("canHitAgain", 1);
+        }
+    }
+
+    IEnumerator DisablePanel()
+    {
+        yield return new WaitForSecondsRealtime(4);
+        HUDManager.Instance.enableTextPanel(false);
+    }
+
 }
