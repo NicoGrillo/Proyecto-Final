@@ -23,11 +23,10 @@ public class PlayerData : MonoBehaviour
     //[SerializeField] private int rangedDamageTake;
     //[SerializeField] private int hypnoDamageTake;
 
-    [SerializeField] private bool isActive = true;
+    [SerializeField] private bool isHealActive = true;
+    [SerializeField] private bool isFearActive = true;
     [SerializeField][Range(1, 60)] int healingTime = 10;
     [SerializeField][Range(1, 60)] int fearRecoverTime = 2;
-
-    //enum DamageTypes { Melee, Range, Hypno };
 
     private void Awake()
     {
@@ -37,7 +36,6 @@ public class PlayerData : MonoBehaviour
     private void Start()
     {
         HP = 100;
-        StartCoroutine(PassiveHealing());
     }
 
     private void Update()
@@ -46,6 +44,8 @@ public class PlayerData : MonoBehaviour
         {
             PlayerEvents.OnLoseCall();
         }
+        StartCoroutine(PassiveHealing());
+        StartCoroutine(PassiveFearRecover());
     }
 
     public void TakeDamage(int value)
@@ -61,27 +61,29 @@ public class PlayerData : MonoBehaviour
 
     IEnumerator PassiveHealing()
     {
-        if (isActive)
+        if (isHealActive)
         {
-            if (health < 100)
+            if (HP < 100)
             {
-                //ESPERAR x SEGUNDOS PARA CURAR
+                isHealActive = false;
                 yield return new WaitForSeconds(healingTime);
-                //CURA 1 HP
+                isHealActive = true;
                 HP++;
+                HUDManager.SetHPBar(HP);
             }
         }
     }
     IEnumerator PassiveFearRecover()
     {
-        if (isActive)
+        if (isFearActive)
         {
-            if (fear > 0)
+            if (FearLVL > 0)
             {
-                //ESPERAR x SEGUNDOS PARA CURAR
+                isFearActive = false;
                 yield return new WaitForSeconds(fearRecoverTime);
-                //CURA 1 HP
-                fear--;
+                isFearActive = true;
+                FearLVL--;
+                HUDManager.SetFearBar(FearLVL);
             }
         }
     }

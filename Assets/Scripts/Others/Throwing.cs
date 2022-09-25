@@ -12,11 +12,17 @@ public class Throwing : MonoBehaviour
     void Start()
     {
         RB = GetComponent<Rigidbody>();
-        RB.AddForce(transform.TransformDirection(new Vector3(0, 0.17f, 1)) * intensity, ForceMode.Impulse);
+        RB.AddForce(transform.TransformDirection(new Vector3(0, 0, 1)) * intensity, ForceMode.Impulse);
     }
 
-    void Update()
+    /*void onCollisionEnter(Collider other)
     {
-        //transform.Translate(Vector3.forward * intensity * Time.deltaTime);
-    }
+        Debug.Log("COLISION");
+        Debug.Log(other);
+        if (other.gameObject.CompareTag("Player"))
+        {
+            Debug.Log("Proyectil");
+            PlayerEvents.OnDamageCall(transform.GetComponent<PlayerDamageSource>().RangedDamage);
+        }
+    }*/
 }

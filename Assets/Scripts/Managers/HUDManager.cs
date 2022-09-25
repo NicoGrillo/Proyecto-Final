@@ -15,7 +15,8 @@ public class HUDManager : MonoBehaviour
     [SerializeField] private TMP_Text rocksText;
     [SerializeField] private GameObject winPanel;
     [SerializeField] private GameObject losePanel;
-    [SerializeField] public GameObject textPanel;
+    [SerializeField] private GameObject textPanel;
+    [SerializeField] private TMP_Text noteText;
 
     private float count;
     private string temporalText;
@@ -30,6 +31,8 @@ public class HUDManager : MonoBehaviour
             instance = this;
             PlayerEvents.OnWin += WinUI;
             PlayerEvents.OnLose += LoseUI;
+            TutorialEvents.OnFLPick += FLPick;
+            TutorialEvents.OnRocksFirstPick += RocksPick;
         }
         else
         {
@@ -40,7 +43,9 @@ public class HUDManager : MonoBehaviour
     private void Start()
     {
         selectedText.text = "";
-        textPanel.SetActive(false);
+        noteText.text = TextHUDManager.TutorialMoveText;
+        PlayerEvents.OnCantMoveCall(true);
+        //TutorialEvents.OnTextPanelActivateCall(true);
     }
 
     private void Update()
@@ -67,13 +72,6 @@ public class HUDManager : MonoBehaviour
                     .GetChild(childIndex).GetComponent<Image>().color = Color.red;
     }
 
-    public static void DisableAllItemsIcons()
-    {
-        foreach (Transform panel in instance.itemPanel.transform)
-        {
-            panel.GetChild(0).GetComponent<Image>().color = Color.black;
-        }
-    }
 
     private void ResetText()
     {
@@ -116,11 +114,11 @@ public class HUDManager : MonoBehaviour
         rocksText.text = newText;
     }
 
-    public void enableTextPanel(bool value)
+    public void enableTextPanel(string note)
     {
-        textPanel.SetActive(value);
-        PlayerEvents.OnCantMoveCall(value);
-        Cursor.lockState = CursorLockMode.Confined;
+        PlayerEvents.OnCantMoveCall(true);
+        textPanel.SetActive(true);
+        if (note == "StartNote") noteText.text = "There is no time for explanations, you have to run away and hide from those things before dawn.";
     }
 
     public void onCancelTextPanelButton()
@@ -141,19 +139,33 @@ public class HUDManager : MonoBehaviour
 
     private void LoseUI()
     {
-        Debug.Log(gameObject.name + " recibe al evento OnLose");
         foreach (Transform child in transform)
         {
             child.gameObject.SetActive(false);
         }
         losePanel.SetActive(true);
         PlayerEvents.OnCantMoveCall(true);
-        Debug.Log(gameObject.name + " llamó al evento OnCantMove");
+    }
+
+    private void FLPick()
+    {
+        textPanel.SetActive(true);
+        PlayerEvents.OnCantMoveCall(true);
+        noteText.text = TextHUDManager.TutorialFLText;
+    }
+
+    private void RocksPick()
+    {
+        textPanel.SetActive(true);
+        PlayerEvents.OnCantMoveCall(true);
+        noteText.text = TextHUDManager.TutorialRocksText;
     }
 
     private void OnDisable()
     {
         PlayerEvents.OnWin -= WinUI;
         PlayerEvents.OnLose -= LoseUI;
+        TutorialEvents.OnFLPick -= FLPick;
+        TutorialEvents.OnRocksFirstPick -= RocksPick;
     }
 }

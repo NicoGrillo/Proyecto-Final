@@ -13,23 +13,41 @@ public class PlayerItemsManager : MonoBehaviour
     //Dictionary
     private Dictionary<string, GameObject> itemDirectory;
     public Dictionary<string, GameObject> ItemDirectory { get => itemDirectory; set => itemDirectory = value; }
+    //----------------------------------------------------------------------------------//
+    [SerializeField] GameObject inventory;
+    [SerializeField] GameObject slotHolder;
+    private bool inventoryEnabled;
 
+    private int allSlots;
+    private bool enableSlots;
+
+    private Dictionary<string, GameObject> inventorySlot;
+    public Dictionary<string, GameObject> Inventory { get => inventorySlot; set => inventorySlot = value; }
+
+
+
+    //----------------------------------------------------------------------------------//
     bool FlashlightON;
 
     void Start()
     {
-        //DiseableAllWeapons();
         rocksList = new List<GameObject>();
         itemDirectory = new Dictionary<string, GameObject>();
         FlashlightON = false;
+
+        allSlots = slotHolder.transform.childCount;
+
     }
 
-    void DiseableAllItems()
+    void Update()
     {
-        for (int i = 0; i < rocksList.Count; i++)
-        {
-            rocksList[i].SetActive(false);
-        }
+        if (Input.GetKeyDown(KeyCode.Q)) CheckInventory();
+
+        if (Input.GetKeyDown(KeyCode.F)) FlashlightItem();
+
+        if (Input.GetKeyDown(KeyCode.I)) inventoryEnabled = !inventoryEnabled;
+        if (inventoryEnabled) inventory.SetActive(true);
+        else inventory.SetActive(false);
     }
 
     void CheckInventory()
@@ -43,26 +61,19 @@ public class PlayerItemsManager : MonoBehaviour
         HUDManager.Instance.SetSelectedText("Tengo " + count + " items guardados");
     }
 
-    void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Q)) CheckInventory();
-
-        if (Input.GetKeyDown(KeyCode.F)) FlashlightItem();
-    }
-
     //Método que permite equipar la linterna al Player
     private void FlashlightItem()
     {
         if (!FlashlightON)
         {
             EquipItem(itemDirectory["Flashlight"]);
-            HUDManager.EnableItem(0,1);
+            HUDManager.EnableItem(0, 1);
             FlashlightON = true;
         }
         else
         {
             DetachItems();
-            HUDManager.EnableItem(0,0);
+            HUDManager.EnableItem(0, 0);
             FlashlightON = false;
         }
     }
@@ -76,7 +87,7 @@ public class PlayerItemsManager : MonoBehaviour
         item.transform.localRotation = Quaternion.Euler(0, 0, 0);
     }
 
-        private void DetachItems()
+    private void DetachItems()
     {
         foreach (Transform child in playerHand)
         {

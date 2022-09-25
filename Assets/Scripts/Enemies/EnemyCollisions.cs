@@ -23,7 +23,6 @@ public class EnemyCollisions : MonoBehaviour
             if (!beingHit)
             {
                 enemyData.KnockedLevel -= 5;
-                Debug.Log("le di y le queda " + enemyData.KnockedLevel + " puntos");
                 Destroy(other.gameObject);
                 beingHit = true;
                 Invoke("canHitAgain", 1);

@@ -21,6 +21,8 @@ public class GameManager : MonoBehaviour
     private static bool sceneLevel0 = true;
     public static bool SceneLevel0 { get => sceneLevel0; set => sceneLevel0 = value; }
 
+    private bool sceneActivated = true;
+
     private void Awake()
     {
         if (instance == null)
@@ -28,6 +30,7 @@ public class GameManager : MonoBehaviour
             instance = this;
             InitialSettings();
             DontDestroyOnLoad(gameObject);
+            RenderSettings.fog = true;
         }
         else
         {
@@ -50,6 +53,11 @@ public class GameManager : MonoBehaviour
         {
             if (SceneLevel0) HUDActive();
             SceneLevel0 = false;
+        }
+        if (SceneManager.GetActiveScene().name == "Level1")
+        {
+            if (sceneActivated) HUDActive();
+            sceneActivated = false;
         }
     }
 

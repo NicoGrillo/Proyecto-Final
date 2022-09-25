@@ -46,6 +46,7 @@ public class PlayerCollisionController : MonoBehaviour
 
                 if (other.gameObject.name == "Flashlight")
                 {
+                    TutorialEvents.OnFLPickCall();
                     other.gameObject.GetComponentInChildren<Flashlight_PRO>().Switch();
                     HUDManager.Instance.SetSelectedText("Encontré una linterna. Con F la uso");
                     GameManager.FLLevel = 100;
@@ -57,14 +58,24 @@ public class PlayerCollisionController : MonoBehaviour
             if (other.gameObject.name == "StartNote")
             {
                 Destroy(other.gameObject);
-                HUDManager.Instance.enableTextPanel(true);
-                StartCoroutine(DisablePanel());
+                HUDManager.Instance.enableTextPanel("StartNote");
             }
         }
 
         if (other.CompareTag("WinWall"))
         {
             PlayerEvents.OnWinCall();
+        }
+
+        if (other.CompareTag("EnemyProyectile"))
+        {
+            if (!beingHit)
+            {
+                Destroy(other.gameObject);
+                beingHit = true;
+                PlayerEvents.OnDamageCall(transform.GetComponent<PlayerDamageSource>().RangedDamage);
+                Invoke("canHitAgain", 1);
+            }
         }
     }
 
@@ -73,6 +84,7 @@ public class PlayerCollisionController : MonoBehaviour
         if (other.gameObject.CompareTag("Enemy")) enemyCollision();
         if (other.gameObject.CompareTag("Rocks"))
         {
+            TutorialEvents.OnRocksFirstPickCall();
             bool repeated = false;
             foreach (GameObject rocks in playerItemManager.RocksList)
             {
@@ -89,15 +101,7 @@ public class PlayerCollisionController : MonoBehaviour
             }
         }
 
-        if (other.gameObject.CompareTag("EnemyProyectile"))
-        {
-            if (!beingHit)
-            {
-                beingHit = true;
-                PlayerEvents.OnDamageCall(transform.GetComponent<PlayerDamageSource>().RangedDamage);
-                Invoke("canHitAgain", 1);
-            }
-        }
+        /**/
     }
 
     private void canHitAgain()
@@ -114,11 +118,4 @@ public class PlayerCollisionController : MonoBehaviour
             Invoke("canHitAgain", 1);
         }
     }
-
-    IEnumerator DisablePanel()
-    {
-        yield return new WaitForSecondsRealtime(4);
-        HUDManager.Instance.enableTextPanel(false);
-    }
-
 }

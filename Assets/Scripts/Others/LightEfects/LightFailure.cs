@@ -14,25 +14,15 @@ public class LightFailure : MonoBehaviour
     {
         lightIntensity = GetComponentInChildren<Light>();
         initialIntensity = lightIntensity.intensity;
-        lowLevel = Random.Range(0, 6);
+        lowLevel = Random.Range(0, 8);
     }
 
     // Update is called once per frame
     void Update()
     {
-        LowBatteryFailure();
-    }
-
-    private void LowBatteryFailure()
-    {
-        if (lowLevel >= 5)
+        if (lowLevel >= 7)
         {
-            TurnOnOff();
-            Invoke("TurnOnOff", 0.05f);
-            Invoke("TurnOnOff", 0.10f);
-            Invoke("TurnOnOff", 0.15f);
-            Invoke("TurnOnOff", 0.6f);
-            Invoke("TurnOnOff", 1.5f);
+            StartCoroutine(LowBatteryFailure());
             lowLevel = 0;
         }
         lowLevel += Time.deltaTime;
@@ -43,5 +33,20 @@ public class LightFailure : MonoBehaviour
         if (onOff) lightIntensity.intensity = 0;
         else lightIntensity.intensity = initialIntensity;
         onOff = !onOff;
+    }
+
+    IEnumerator LowBatteryFailure()
+    {
+        TurnOnOff();
+        yield return new WaitForSeconds(0.05f);
+        TurnOnOff();
+        yield return new WaitForSeconds(0.05f);
+        TurnOnOff();
+        yield return new WaitForSeconds(0.05f);
+        TurnOnOff();
+        yield return new WaitForSeconds(0.45f);
+        TurnOnOff();
+        yield return new WaitForSeconds(0.9f);
+        TurnOnOff();
     }
 }
