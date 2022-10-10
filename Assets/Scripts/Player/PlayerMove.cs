@@ -159,6 +159,7 @@ public class PlayerMove : MonoBehaviour
     {
         playerData.FearLVL = 0;
         HUDManager.SetFearBar(0);
+        Debug.Log("PlayerMove Seteando Fear a 0");
         cantMove = true;
         anim.SetTrigger("Idle");
 

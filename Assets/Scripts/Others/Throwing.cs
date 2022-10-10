@@ -7,10 +7,12 @@ public class Throwing : MonoBehaviour
     //---------------------- PROPIEDADES SERIALIZADAS ----------------------
     [SerializeField][Range(1f, 2000f)] int intensity = 40;
     //---------------------- PROPIEDADES PRIVADAS ----------------------
+
     private Rigidbody RB;
 
     void Start()
     {
+
         RB = GetComponent<Rigidbody>();
         RB.AddForce(transform.TransformDirection(new Vector3(0, 0, 1)) * intensity, ForceMode.Impulse);
     }

@@ -48,6 +48,12 @@ public class PlayerData : MonoBehaviour
         StartCoroutine(PassiveFearRecover());
     }
 
+    public void UpdateData()
+    {
+        HUDManager.SetHPBar(HP);
+        HUDManager.SetFearBar((FearLVL / 5) * 20);
+    }
+
     public void TakeDamage(int value)
     {
         HP -= value;
@@ -83,7 +89,7 @@ public class PlayerData : MonoBehaviour
                 yield return new WaitForSeconds(fearRecoverTime);
                 isFearActive = true;
                 FearLVL--;
-                HUDManager.SetFearBar(FearLVL);
+                HUDManager.SetFearBar((FearLVL / 5) * 20);
             }
         }
     }

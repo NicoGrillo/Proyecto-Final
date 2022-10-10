@@ -6,8 +6,6 @@ public class PlayerVision : MonoBehaviour
 {
     [SerializeField] private Transform visionPoint;
     [SerializeField] private float rayDistance = 10f;
-    [SerializeField][Range(1, 50)] private int lvlToHypno = 5;
-
 
     private PlayerMove playerMove;
     private PlayerData playerData;
@@ -37,12 +35,12 @@ public class PlayerVision : MonoBehaviour
             if (hit.transform.CompareTag("HypnoEnemy") && canHypno)
             {
                 playerData.FearLVL++;
-                HUDManager.SetFearBar((playerData.FearLVL / lvlToHypno) * 20);
-                if (playerData.FearLVL >= lvlToHypno)
+                HUDManager.SetFearBar((playerData.FearLVL / 5) * 20);
+                if (playerData.FearLVL >= 5)
                 {
                     PlayerEvents.OnStateHypnoCall();
                     canHypno = false;
-                    Invoke("delayRecover", lvlToHypno + 1);
+                    Invoke("delayRecover", 6);
                 }
             }
         }

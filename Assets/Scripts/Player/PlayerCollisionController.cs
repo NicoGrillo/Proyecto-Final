@@ -4,62 +4,38 @@ using UnityEngine;
 
 public class PlayerCollisionController : MonoBehaviour
 {
-    //---------------------- PROPIEDADES SERIALIZADAS ----------------------    
+    //---------------------- PROPIEDADES SERIALIZADAS ----------------------
+    [SerializeField] GameObject meleeHitSound;
+    [SerializeField] GameObject pickItemSound;
     //---------------------- PROPIEDADES PUBLICAS ----------------------
     //---------------------- PROPIEDADES PRIVADAS ----------------------
     private bool beingHit;
     private PlayerData playerData;
     private PlayerItemsManager playerItemManager;
+    private Inventory inventory;
+    private PlayerSoundManager playerSoundManager;
 
     void Start()
     {
         playerData = GetComponent<PlayerData>();
         playerItemManager = GetComponent<PlayerItemsManager>();
+        inventory = GetComponent<Inventory>();
+        playerSoundManager = GetComponent<PlayerSoundManager>();
         beingHit = false;
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag("Enemy"))
-        {
-            if (!beingHit)
-            {
-                beingHit = true;
-                PlayerEvents.OnDamageCall(transform.GetComponent<PlayerDamageSource>().MeleeDamage);
-                Invoke("canHitAgain", 1);
-            }
-        }
-
-        if (other.CompareTag("Battery"))
-        {
-            Destroy(other.gameObject);
-            GameManager.FLLevel = 100;
-            HUDManager.SetFLBar(GameManager.FLLevel);
-            HUDManager.Instance.SetSelectedText("Encontré unas baterias, tengo la linterna completa");
-        }
+        if (other.gameObject.CompareTag("Enemy")) enemyCollision();
 
         if (other.CompareTag("Items"))
         {
-            if (!playerItemManager.ItemDirectory.ContainsKey(other.gameObject.name))
-            {
-                playerItemManager.ItemDirectory.Add(other.gameObject.name, other.gameObject);
+            GameObject itemPickedUp = other.gameObject;
+            Item item = itemPickedUp.GetComponent<Item>();
+            inventory.AddItem(itemPickedUp, item.ID, item.type, item.description, item.icon);
+            Destroy(Instantiate(pickItemSound, transform.position, Quaternion.identity), .5f);
+            PlayerEvents.OnInventoryRefreshCall();
 
-                if (other.gameObject.name == "Flashlight")
-                {
-                    TutorialEvents.OnFLPickCall();
-                    other.gameObject.GetComponentInChildren<Flashlight_PRO>().Switch();
-                    HUDManager.Instance.SetSelectedText("Encontré una linterna. Con F la uso");
-                    GameManager.FLLevel = 100;
-                    HUDManager.SetFLBar(GameManager.FLLevel);
-                }
-                other.gameObject.SetActive(false);
-            }
-
-            if (other.gameObject.name == "StartNote")
-            {
-                Destroy(other.gameObject);
-                HUDManager.Instance.enableTextPanel("StartNote");
-            }
         }
 
         if (other.CompareTag("WinWall"))
@@ -74,34 +50,9 @@ public class PlayerCollisionController : MonoBehaviour
                 Destroy(other.gameObject);
                 beingHit = true;
                 PlayerEvents.OnDamageCall(transform.GetComponent<PlayerDamageSource>().RangedDamage);
-                Invoke("canHitAgain", 1);
+                StartCoroutine(DamageSound(2));
             }
         }
-    }
-
-    private void OnControllerColliderHit(ControllerColliderHit other)
-    {
-        if (other.gameObject.CompareTag("Enemy")) enemyCollision();
-        if (other.gameObject.CompareTag("Rocks"))
-        {
-            TutorialEvents.OnRocksFirstPickCall();
-            bool repeated = false;
-            foreach (GameObject rocks in playerItemManager.RocksList)
-            {
-                if (other.gameObject.transform.parent.name == rocks.name) repeated = true;
-            }
-
-            if (!repeated)
-            {
-                playerItemManager.RocksList.Add(other.gameObject.transform.parent.gameObject);
-                GameManager.RocksAmmo += 2;
-                HUDManager.EnableItem(1, 0);
-                HUDManager.Instance.ThrowRocksText("x" + GameManager.RocksAmmo);
-                HUDManager.Instance.SetSelectedText("Algunas rocas, creo que puedo usarlas");
-            }
-        }
-
-        /**/
     }
 
     private void canHitAgain()
@@ -115,7 +66,21 @@ public class PlayerCollisionController : MonoBehaviour
         {
             beingHit = true;
             PlayerEvents.OnDamageCall(transform.GetComponent<PlayerDamageSource>().MeleeDamage);
-            Invoke("canHitAgain", 1);
+            StartCoroutine(DamageSound(2));
         }
+    }
+
+    IEnumerator DamageSound(int index)
+    {
+        /*
+        yield return new WaitForSeconds(0.2f);
+        playerSoundManager.PlayerAudioSelection(index, 0.5f);
+        yield return new WaitForSeconds(1f);
+        playerSoundManager.StopSound();
+        */
+
+        Destroy(Instantiate(meleeHitSound, transform.position, Quaternion.identity), 1f);
+        yield return new WaitForSeconds(1f);
+        beingHit = false;
     }
 }

@@ -17,6 +17,7 @@ public class PlayerCC : MonoBehaviour
     private Animator anim;
     private PlayerData playerData;
     private RocksThrow rocksThrow;
+    private PlayerSoundManager playerSoundManager;
     private Vector3 playerDirection;
 
     private float cameraAxisX;
@@ -27,6 +28,8 @@ public class PlayerCC : MonoBehaviour
     private float yMove = 0;
 
     private bool isRunning = false;
+    private bool isAudioActive = false;
+    private bool isIdle = true;
 
     private bool cantMove;
     public bool IsHypno { get => cantMove; set => cantMove = value; }
@@ -44,6 +47,7 @@ public class PlayerCC : MonoBehaviour
         anim = GetComponent<Animator>();
         playerData = GetComponent<PlayerData>();
         rocksThrow = GetComponent<RocksThrow>();
+        playerSoundManager = GetComponent<PlayerSoundManager>();
         cantMove = false;
     }
 
@@ -55,6 +59,7 @@ public class PlayerCC : MonoBehaviour
             WalkOrRun();
             AnimPlayer();
             InputsPlayer();
+
         }
         else AnimPlayer();
     }
@@ -95,8 +100,18 @@ public class PlayerCC : MonoBehaviour
 
     private void WalkOrRun()
     {
-        if (Input.GetKey(KeyCode.LeftShift)) isRunning = true;
-        if (Input.GetKeyUp(KeyCode.LeftShift)) isRunning = false;
+        if (Input.GetKey(KeyCode.LeftShift))
+        {
+            isRunning = true;
+            AudioPlayer(-1);
+        }
+        if (!Input.GetKey(KeyCode.LeftShift))
+        {
+            isRunning = false;
+            AudioPlayer(0);
+        }
+        if (Input.GetKeyDown(KeyCode.LeftShift)) StopAudio();
+        if (Input.GetKeyUp(KeyCode.LeftShift)) StopAudio();
     }
 
     private void InputsPlayer()
@@ -106,8 +121,6 @@ public class PlayerCC : MonoBehaviour
         if (Input.GetKey(KeyCode.S)) playerDirection += Vector3.back;
         if (Input.GetKey(KeyCode.A)) playerDirection += Vector3.left;
         if (Input.GetKey(KeyCode.D)) playerDirection += Vector3.right;
-
-        if (Input.GetMouseButtonDown(0)) rocksThrow.Throw();
 
         if (Input.GetKeyDown(KeyCode.F1)) sunController.GetComponent<SunController>().selectCase(1);
         if (Input.GetKeyDown(KeyCode.F2)) sunController.GetComponent<SunController>().selectCase(2);
@@ -122,6 +135,33 @@ public class PlayerCC : MonoBehaviour
 
         anim.SetFloat("YSpeed", yMove);
         anim.SetFloat("XSpeed", xMove);
+    }
+
+    private void AudioPlayer(int index)
+    {
+        if (playerDirection != Vector3.zero)
+        {
+            if (!isAudioActive)
+            {
+                playerSoundManager.PlayerAudioSelection(index, 0.3f);
+                isAudioActive = true;
+                isIdle = false;
+            }
+        }
+        else
+        {
+            if (!isIdle)
+            {
+                isIdle = true;
+                StopAudio();
+            }
+        }
+    }
+
+    private void StopAudio()
+    {
+        playerSoundManager.StopSound();
+        isAudioActive = false;
     }
 
     private void yAnimMovement()
@@ -213,6 +253,7 @@ public class PlayerCC : MonoBehaviour
     private void PlayerMove(bool value)
     {
         cantMove = value;
+        StopAudio();
     }
 
     private void OnDisable()

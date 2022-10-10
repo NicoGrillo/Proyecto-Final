@@ -6,17 +6,20 @@ public class FlashlightController : MonoBehaviour
 {
     //---------------------- PROPIEDADES SERIALIZADAS ----------------------
     [SerializeField][Range(1, 30)] int decayTime = 1;
+
     //---------------------- PROPIEDADES PUBLICAS ----------------------
     //---------------------- PROPIEDADES PRIVADAS ----------------------
     private Flashlight_PRO flashlight;
+    private GameObject lightGO;
     private float count = 0f;
-    private float lowLevel = 10f;
+    private float lowLevelCount = 10f;
     private bool withBatteryLeft;
+
 
     void Start()
     {
         flashlight = GetComponent<Flashlight_PRO>();
-        //flashlight.Switch();
+        lightGO = transform.GetChild(1).gameObject;
         withBatteryLeft = true;
         flashlight.Change_Intensivity(GameManager.FLLevel);
     }
@@ -24,27 +27,36 @@ public class FlashlightController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (withBatteryLeft) Flashlight();
+        if (withBatteryLeft)
+        {
+            Flashlight();
+            Flashlightfailure();
+        }
         else BatteryRecharge();
         LostBatteryLevel();
-        if (GameManager.FLLevel <= 40)
-        {
-            if (lowLevel >= 5)
-            {
-                StartCoroutine(LowBatteryFailure());
-                lowLevel = 0;
-            }
-            lowLevel += Time.deltaTime;
-        }
+
     }
 
     private void Flashlight()
     {
-        flashlight.Change_Intensivity(GameManager.FLLevel);
+        //flashlight.Change_Intensivity(GameManager.FLLevel);
         if (GameManager.FLLevel <= 0)
         {
-            flashlight.Switch();
             withBatteryLeft = false;
+            lightGO.SetActive(false);
+        }
+    }
+    
+    private void Flashlightfailure()
+    {
+        if (GameManager.FLLevel <= 40)
+        {
+            if (lowLevelCount >= 5)
+            {
+                StartCoroutine(LowBatteryFailure());
+                lowLevelCount = 0;
+            }
+            lowLevelCount += Time.deltaTime;
         }
     }
 
@@ -64,24 +76,33 @@ public class FlashlightController : MonoBehaviour
     {
         if (GameManager.FLLevel > 0)
         {
-            flashlight.Switch();
             withBatteryLeft = true;
+            lightGO.SetActive(true);
         }
     }
 
     IEnumerator LowBatteryFailure()
     {
-        flashlight.SwitchFailure();
+        lightGO.SetActive(false);
         yield return new WaitForSeconds(0.05f);
-        flashlight.SwitchFailure();
+        lightGO.SetActive(true);
         yield return new WaitForSeconds(0.05f);
-        flashlight.SwitchFailure();
+        lightGO.SetActive(false);
         yield return new WaitForSeconds(0.05f);
-        flashlight.SwitchFailure();
+        lightGO.SetActive(true);
         yield return new WaitForSeconds(0.45f);
-        flashlight.SwitchFailure();
+        lightGO.SetActive(false);
         yield return new WaitForSeconds(0.9f);
-        flashlight.SwitchFailure();
+        lightGO.SetActive(true);
+    }
+
+
+    private void ActivatedFL(bool value)
+    {
+        for (int i = 0; i < transform.childCount; i++)
+        {
+            transform.GetChild(i).gameObject.SetActive(value);
+        }
     }
 }
 

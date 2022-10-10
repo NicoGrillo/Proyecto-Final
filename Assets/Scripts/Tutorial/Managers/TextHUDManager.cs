@@ -4,25 +4,27 @@ using UnityEngine;
 
 public class TextHUDManager : MonoBehaviour
 {
-    private static string firstStepText;
-    private static string secondStepText;
+    private static string exitArea3;
+    private static string tutorialBatteries;
     private static string lastStepText;
     private static string tutorialMoveText;
     private static string tutorialFLText;
+    private static string tutorialRuneText;
     private static string tutorialRocksText;
     private static string exitArea1;
-    private static string thirstStepText;
+    private static string bigBoss;
     private static string exitArea2;
 
 
-    public static string FirstStepText { get => firstStepText; }
-    public static string SecondStepText { get => secondStepText; }
+    public static string ExitArea3 { get => exitArea3; }
+    public static string TutorialBatteries { get => tutorialBatteries; }
     public static string LastStepText { get => lastStepText; }
     public static string TutorialMoveText { get => tutorialMoveText; }
     public static string TutorialFLText { get => tutorialFLText; }
+    public static string TutorialRuneText { get => tutorialRuneText; }
     public static string TutorialRocksText { get => tutorialRocksText; }
     public static string ExitArea1 { get => exitArea1; }
-    public static string ThirstStepText { get => thirstStepText; }
+    public static string BigBoss { get => bigBoss; }
     public static string ExitArea2 { get => exitArea2; }
 
     void Awake()
@@ -30,18 +32,24 @@ public class TextHUDManager : MonoBehaviour
         //There is no time for explanations, you have to run away and hide from those things before dawn.
 
         //AREA 1 Textos
-        firstStepText = "------------Warning-----------Be careful out there, you don't know what to expect. Run Juan, run.";
-        secondStepText = "-------Useless, or not?------It seems that the rocks are useless, at least against those creatures.";
-        lastStepText = "------------Look Out----------An exit! You just have to dodge the last one.";
-        tutorialMoveText = "-------------Tutorial-----------Use WASD to move and the mouse to look around. Hold Shift to run.";
+        tutorialMoveText = "-------------Tutorial-----------Welcome. Use WASD to move and the mouse to look around. Hold Shift to run. To access inventory press I.";
         tutorialFLText = "-------------Tutorial-----------You found a Flashlight. Use the F button to activate it.";
-        tutorialRocksText = "-------------Tutorial-----------Rocks, maybe you can use them. Will there be more in the other stones? Right click to throw rocks.";
-        exitArea1 = "-------------Area 2------------Welcome to the second area. There are other creatures around here. Be careful.";
+        tutorialRocksText = "-------------Tutorial-----------Some Rocks, maybe you can knock down some enemies. Equip it and right click to throw rocks.";
+
+        exitArea1 = "-------------Area 2------------Welcome to the Area 2. There are other creatures around here. Be careful.";
+        //lastStepText = "------------Look Out----------An exit! You just have to dodge the last one.";
 
         //AREA 2 Textos
-        firstStepText = "---------Reload light---------Batteries for the flashlight, maybe the last ones.";
-        secondStepText = "-----Ranged creatures-----More you advance, more dangerous it gets.";
-        thirstStepText = "------Look everywhere------Never let your guard down, you don't know what the fog hides.";
-        exitArea2 = "-------------Area 3------------Welcome to the third area. Some light among so much darkness.";
+        tutorialBatteries = "-------------Tutorial-----------Batteries for the flashlight, use them from inventory.";
+
+        exitArea2 = "-------------Area 3------------Welcome to the Area 3. Some light among darkness.";
+
+        //AREA 3 Textos
+        tutorialRuneText = "-------------Tutorial-----------You found a Rune. Equip it to knock down some enemies.";
+
+        exitArea3 = "-------------Area 4------------Welcome to the Area 4. Hopefully the last one.";
+
+        //AREA 4 Textos
+        bigBoss = "------Look everywhere------In the shadows hides a great monster.";
     }
 }

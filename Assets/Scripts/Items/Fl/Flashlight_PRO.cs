@@ -10,7 +10,7 @@ public class Flashlight_PRO : MonoBehaviour
     [SerializeField()] GameObject Lights; // all light effects and spotlight
     [SerializeField()] AudioSource switch_sound; // audio of the switcher
     [SerializeField()] ParticleSystem dust_particles; // dust particles
-    [SerializeField()][Range(1, 15)] int maxIntensity = 8;
+    [SerializeField()][Range(1, 30)] int maxIntensity = 20;
 
 
 

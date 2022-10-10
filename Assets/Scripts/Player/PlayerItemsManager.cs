@@ -10,88 +10,66 @@ public class PlayerItemsManager : MonoBehaviour
     [SerializeField] List<GameObject> rocksList;
     public List<GameObject> RocksList { get => rocksList; set => rocksList = value; }
 
-    //Dictionary
-    private Dictionary<string, GameObject> itemDirectory;
-    public Dictionary<string, GameObject> ItemDirectory { get => itemDirectory; set => itemDirectory = value; }
     //----------------------------------------------------------------------------------//
     [SerializeField] GameObject inventory;
-    [SerializeField] GameObject slotHolder;
-    private bool inventoryEnabled;
-
-    private int allSlots;
-    private bool enableSlots;
-
-    private Dictionary<string, GameObject> inventorySlot;
-    public Dictionary<string, GameObject> Inventory { get => inventorySlot; set => inventorySlot = value; }
-
-
+    private bool inventoryEnabled = false;
 
     //----------------------------------------------------------------------------------//
     bool FlashlightON;
 
+
+    void Awake()
+    {
+        //PlayerEvents.OnInventoryRefresh += UpdatePlayer;
+    }
+
     void Start()
     {
         rocksList = new List<GameObject>();
-        itemDirectory = new Dictionary<string, GameObject>();
         FlashlightON = false;
-
-        allSlots = slotHolder.transform.childCount;
-
+        GameManager.FLLevel = 100;
+        //inventory.SetActive(false);
+        inventoryEnabled = true;
     }
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Q)) CheckInventory();
+        if (Input.GetKeyDown(KeyCode.F)) ActivateEquippedUtilityItem();
 
-        if (Input.GetKeyDown(KeyCode.F)) FlashlightItem();
+        if (Input.GetKeyDown(KeyCode.Q)) DetachEquippedItems();
 
-        if (Input.GetKeyDown(KeyCode.I)) inventoryEnabled = !inventoryEnabled;
-        if (inventoryEnabled) inventory.SetActive(true);
-        else inventory.SetActive(false);
+        if (Input.GetKeyDown(KeyCode.I))
+        {
+            inventoryEnabled = !inventoryEnabled;
+            inventory.SetActive(inventoryEnabled);
+            PlayerEvents.OnCantMoveCall(inventoryEnabled);
+            PlayerEvents.OnInventoryRefreshCall();
+        }
     }
 
-    void CheckInventory()
+    //Método que permite usar algun Utility al Player
+    private void ActivateEquippedUtilityItem()
     {
-        int count = 0;
-
-        for (int i = 0; i < itemDirectory.Count; i++)
+        if (GameManager.FLEquipped)
         {
-            count++;
-        }
-        HUDManager.Instance.SetSelectedText("Tengo " + count + " items guardados");
-    }
-
-    //Método que permite equipar la linterna al Player
-    private void FlashlightItem()
-    {
-        if (!FlashlightON)
-        {
-            EquipItem(itemDirectory["Flashlight"]);
-            HUDManager.EnableItem(0, 1);
-            FlashlightON = true;
-        }
-        else
-        {
-            DetachItems();
-            HUDManager.EnableItem(0, 0);
-            FlashlightON = false;
+            playerHand.GetChild(0).gameObject.SetActive(!FlashlightON);
+            FlashlightON = !FlashlightON;
         }
     }
 
     private void EquipItem(GameObject item)
     {
-        DetachItems();
+        DetachEquippedItems();
         item.SetActive(true);
         item.transform.parent = playerHand;
         item.transform.localPosition = Vector3.zero;
         item.transform.localRotation = Quaternion.Euler(0, 0, 0);
     }
 
-    private void DetachItems()
+    private void DetachEquippedItems()
     {
         foreach (Transform child in playerHand)
         {
-            child.parent = null;
             child.gameObject.SetActive(false);
         }
     }

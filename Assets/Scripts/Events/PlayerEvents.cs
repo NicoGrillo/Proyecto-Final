@@ -12,7 +12,7 @@ public class PlayerEvents
     public static event Action<int> OnHeal;
     public static event Action<int> OnDamage;
     public static event Action<int> OnShot;
-    public static event Action<int> OnAmmoLoad;
+    public static event Action OnInventoryRefresh;
 
     public static void OnWinCall() { OnWin?.Invoke(); }
     public static void OnLoseCall() { OnLose?.Invoke(); }
@@ -21,5 +21,5 @@ public class PlayerEvents
     public static void OnHealCall(int hp) { OnHeal?.Invoke(hp); }
     public static void OnDamageCall(int hp) { OnDamage?.Invoke(hp); }
     public static void OnShotCall(int hp) { OnShot?.Invoke(hp); }
-    public static void OnAmmoLoadCall(int hp) { OnAmmoLoad?.Invoke(hp); }
+    public static void OnInventoryRefreshCall() { OnInventoryRefresh?.Invoke(); }
 }

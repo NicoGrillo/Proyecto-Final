@@ -13,10 +13,10 @@ public class HUDManager : MonoBehaviour
     [SerializeField] private Slider fearBar;
     [SerializeField] private Slider flBar;
     [SerializeField] private TMP_Text rocksText;
+    [SerializeField] private TMP_Text noteText;
     [SerializeField] private GameObject winPanel;
     [SerializeField] private GameObject losePanel;
     [SerializeField] private GameObject textPanel;
-    [SerializeField] private TMP_Text noteText;
 
     private float count;
     private string temporalText;

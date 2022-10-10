@@ -5,11 +5,12 @@ using UnityEngine;
 public class StepEmptyController : MonoBehaviour
 {
     [SerializeField] GameObject[] objectsToSpawn;
+    [SerializeField] GameObject[] objectsToDesactivate;
     [SerializeField] bool desactiveEnemies = true;
 
     bool firstCollision = false;
 
-    void OnTriggerExit(Collider other)
+    void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("Player"))
         {
@@ -20,6 +21,11 @@ public class StepEmptyController : MonoBehaviour
                 for (int i = 0; i < objectsToSpawn.Length; i++)
                 {
                     objectsToSpawn[i].SetActive(true);
+                }
+
+                for (int i = 0; i < objectsToDesactivate.Length; i++)
+                {
+                    objectsToDesactivate[i].SetActive(false);
                 }
                 gameObject.SetActive(false);
             }
