@@ -16,7 +16,6 @@ public class PlayerCC : MonoBehaviour
     private CharacterController CC;
     private Animator anim;
     private PlayerData playerData;
-    private RocksThrow rocksThrow;
     private PlayerSoundManager playerSoundManager;
     private Vector3 playerDirection;
 
@@ -46,7 +45,6 @@ public class PlayerCC : MonoBehaviour
         CC = GetComponent<CharacterController>();
         anim = GetComponent<Animator>();
         playerData = GetComponent<PlayerData>();
-        rocksThrow = GetComponent<RocksThrow>();
         playerSoundManager = GetComponent<PlayerSoundManager>();
         cantMove = false;
     }

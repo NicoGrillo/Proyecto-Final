@@ -299,7 +299,6 @@ GameObject:
   m_Component:
   - component: {fileID: 3720417672508935738}
   - component: {fileID: -6253426675080167135}
-  - component: {fileID: 3720417672508935743}
   - component: {fileID: 813140828}
   - component: {fileID: 5277927441038561080}
   - component: {fileID: 6770470996306602963}
@@ -353,21 +352,6 @@ MonoBehaviour:
   hypnoDelay: 1
   camera: {fileID: 2106915574}
   sunController: {fileID: 0}
---- !u!114 &3720417672508935743
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3720417672508935716}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a153e88b40da0914e92091b69cd2000d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  rock: {fileID: 3771291528384022113, guid: 40c5dc84ee1b5814bba27e52aa151557, type: 3}
-  rockPoint: {fileID: 3720417672492648836}
-  reloadTime: 1
 --- !u!143 &813140828
 CharacterController:
   m_ObjectHideFlags: 0
@@ -480,6 +464,7 @@ MonoBehaviour:
   rangedDamage: 15
   meleeDamage: 25
   hypnoDamage: 5
+  meleeBossDamage: 40
 --- !u!114 &1452552009
 MonoBehaviour:
   m_ObjectHideFlags: 0

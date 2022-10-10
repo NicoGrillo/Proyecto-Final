@@ -7,7 +7,6 @@ public class PlayerVision : MonoBehaviour
     [SerializeField] private Transform visionPoint;
     [SerializeField] private float rayDistance = 10f;
 
-    private PlayerMove playerMove;
     private PlayerData playerData;
     private bool canHypno;
     //private float count=0;
@@ -16,7 +15,6 @@ public class PlayerVision : MonoBehaviour
     void Start()
     {
         canHypno = true;
-        playerMove = GetComponent<PlayerMove>();
         playerData = GetComponent<PlayerData>();
     }
 

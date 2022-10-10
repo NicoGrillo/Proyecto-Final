@@ -11,8 +11,6 @@ GameObject:
   - component: {fileID: 7490380720549016460}
   - component: {fileID: 7490380720549016461}
   - component: {fileID: 953722912}
-  - component: {fileID: -5070621788384981121}
-  - component: {fileID: -565352442032546606}
   - component: {fileID: 7854490434735803570}
   - component: {fileID: 1861862737244384898}
   - component: {fileID: 5309874238719274578}
@@ -69,30 +67,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 116
   m_CollisionDetection: 0
---- !u!114 &-5070621788384981121
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7490380720549016458}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 31597064ffb7c044d8df715387d5d7cf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &-565352442032546606
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7490380720549016458}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b42fd491c223a434aa8bfc9995ad78d3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!195 &7854490434735803570
 NavMeshAgent:
   m_ObjectHideFlags: 0

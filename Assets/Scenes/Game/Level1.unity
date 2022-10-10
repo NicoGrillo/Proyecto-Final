@@ -122,7 +122,7 @@ NavMeshSettings:
     preserveTilesOutsideBounds: 0
     debug:
       m_Flags: 0
-  m_NavMeshData: {fileID: 23800000, guid: 89d5bb336a4c1cc4186d52687691e30b, type: 2}
+  m_NavMeshData: {fileID: 23800000, guid: ed06bd1bb67906740aaceb94af7d1b91, type: 2}
 --- !u!1001 &2245594
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1607,7 +1607,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1045679724, guid: 62063ba8815cd194e8a6b8e6596486bf, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -18.313965
+      value: -18.313995
       objectReference: {fileID: 0}
     - target: {fileID: 1155097673, guid: 62063ba8815cd194e8a6b8e6596486bf, type: 3}
       propertyPath: m_AnchorMax.y
@@ -28598,10 +28598,6 @@ PrefabInstance:
     - target: {fileID: 3720417672508935738, guid: 14362acfe43622a4a98e4d43ffc4f6f0, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3720417672508935743, guid: 14362acfe43622a4a98e4d43ffc4f6f0, type: 3}
-      propertyPath: m_Enabled
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5096504443994077536, guid: 14362acfe43622a4a98e4d43ffc4f6f0, type: 3}
       propertyPath: maxIntensity
