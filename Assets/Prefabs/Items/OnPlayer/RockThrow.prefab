@@ -61,7 +61,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6a271b69fe3b4fb498e2dac1935a54c5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  intensity: 40
+  intensity: 80
 --- !u!135 &1346620320897685550
 SphereCollider:
   m_ObjectHideFlags: 0

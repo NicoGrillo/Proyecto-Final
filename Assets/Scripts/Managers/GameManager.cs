@@ -11,7 +11,7 @@ public class GameManager : MonoBehaviour
 
     private static bool runeEquipped;
     public static bool RuneEquipped { get => runeEquipped; set => runeEquipped = value; }
-    
+
     //Parameters Levels//
 
     private static int hp;
@@ -33,30 +33,22 @@ public class GameManager : MonoBehaviour
     public static GameManager instance;
     public static GameManager Instance { get => instance; }
 
-    private static bool sceneLevel0 = true;
-    public static bool SceneLevel0 { get => sceneLevel0; set => sceneLevel0 = value; }
-
-
-    private bool sceneActivated = true;
+    [SerializeField] public static bool testing;
 
     private void Awake()
     {
         if (instance == null)
         {
             instance = this;
-            InitialSettings();
+
             DontDestroyOnLoad(gameObject);
-            RenderSettings.fog = true;
+            PlayerEvents.OnLose += EndGame;
+            PlayerEvents.OnWin += EndGame;
         }
         else
         {
             Destroy(gameObject);
         }
-    }
-
-    private void OnSceneLoaded()
-    {
-
     }
 
     private void Update()
@@ -65,30 +57,44 @@ public class GameManager : MonoBehaviour
         {
             SceneManager.LoadScene(0);
         }
-        if (SceneManager.GetActiveScene().name == "Level0")
+
+        if (testing)
         {
-            if (SceneLevel0) HUDActive();
-            SceneLevel0 = false;
-        }
-        if (SceneManager.GetActiveScene().name == "Level1")
-        {
-            if (sceneActivated) HUDActive();
-            sceneActivated = false;
+            InitialSettings();
+            testing = false;
         }
     }
 
-    private void HUDActive()
+    IEnumerator HUDActivate()
     {
+        yield return new WaitForSeconds(.1f);
         HUDManager.SetHPBar(hp);
-        HUDManager.Instance.ThrowRocksText("x" + GameManager.RocksAmmo);
         HUDManager.SetFLBar(flLevel);
         HUDManager.SetFearBar(0);
     }
 
     public void InitialSettings()
     {
+        Debug.Log(testing);
         hp = 100;
         RocksAmmo = 1;
         flLevel = 100;
+        StartCoroutine(HUDActivate());
+    }
+
+    private void EndGame()
+    {
+        StartCoroutine(BackToMenu());
+    }
+
+    IEnumerator BackToMenu()
+    {
+        yield return new WaitForSeconds(3);
+        SceneManager.LoadScene(0);
+    }
+
+    private void OnDisable()
+    {
+        PlayerEvents.OnLose -= EndGame;
     }
 }

@@ -141,6 +141,8 @@ MonoBehaviour:
   enemyAttack: {fileID: 1442919326102270387, guid: 184110c66b8d9614995a226726f2af13, type: 3}
   enemyPlayerSight: {fileID: 7344003651909187372, guid: 704d26bfff2f2f64795fa8957c9e2da0, type: 3}
   enemyRockHit: {fileID: 1442919326102270387, guid: e309dfbed77e9324d8b91774d05c868a, type: 3}
+  enemyKnockedSound: {fileID: 1442919326102270387, guid: c1aafe93125c0a3439bd5c038209187d, type: 3}
+  justIdle: 0
 --- !u!82 &5309874238719274578
 AudioSource:
   m_ObjectHideFlags: 0

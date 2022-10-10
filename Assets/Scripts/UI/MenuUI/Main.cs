@@ -10,11 +10,11 @@ public class Main : MonoBehaviour
     [SerializeField] private TMP_Text playTMP;
 
     // UN METODO PARA CAMBIAR LA ESCENA -> CUANDO SE PRESIONAL EL BOTON PLAY
-    public void OnClickPlay()
+    public void OnClickPlayTutorial()
     {
         SceneManager.LoadScene(1);
-        GameManager.SceneLevel0 = true;
-        //playTMP.text = "CONTINUE";
+        GameManager.testing = true;
+        //GameManager.Instance.InitialSettings();
     }
 
     public void OnExitGame()
@@ -23,11 +23,10 @@ public class Main : MonoBehaviour
         Debug.Log("QUIT");
     }
 
-    public void OnClickRestart()
+    public void OnClickSkipTutorial()
     {
-        GameManager.instance.InitialSettings();
-        Debug.Log("Juego reseteado");
-        //SceneManager.LoadScene(1);
-        //playTMP.text = "PLAY";
+        SceneManager.LoadScene(2);
+        GameManager.testing = true;
+        //GameManager.Instance.InitialSettings();
     }
 }

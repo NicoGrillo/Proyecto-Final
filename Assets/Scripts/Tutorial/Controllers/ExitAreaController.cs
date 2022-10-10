@@ -14,8 +14,7 @@ public class ExitAreaController : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Player"))
         {
-            TutorialEvents.OnTextPanelActivateCall(true); //
-            PlayerEvents.OnCantMoveCall(true);          //PlayerCC: Player no se mueve
+            PlayerEvents.OnCantMoveCall(true);              //PlayerCC: Player no se mueve
             gameObject.SetActive(false);
             textPanel.SetActive(true);
             noteText.text = stepTXT;

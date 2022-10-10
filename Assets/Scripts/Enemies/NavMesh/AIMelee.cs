@@ -10,7 +10,7 @@ public class AIMelee : AI
 
     protected override void Update()
     {
-        if (GameManager.RuneEquipped && distanceToPlayer <= 5) runeActivated = true;
+        if (GameManager.RuneEquipped && distanceToPlayer <= 2) runeActivated = true;
         if (!runeActivated) base.Update();
         else if (runeActivated) EnemyDeath();
     }
@@ -28,6 +28,7 @@ public class AIMelee : AI
     {
         enemyAnimation.Play("Death");
         navMeshAgent.destination = transform.position;
+        Destroy(Instantiate(enemyKnockedSound, transform.position, Quaternion.identity), 1f);
         yield return new WaitForSeconds(2);
         Destroy(this.gameObject);
     }

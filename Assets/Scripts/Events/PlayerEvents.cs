@@ -13,6 +13,7 @@ public class PlayerEvents
     public static event Action<int> OnDamage;
     public static event Action<int> OnShot;
     public static event Action OnInventoryRefresh;
+    public static event Action OnTutorial;
 
     public static void OnWinCall() { OnWin?.Invoke(); }
     public static void OnLoseCall() { OnLose?.Invoke(); }
@@ -22,4 +23,6 @@ public class PlayerEvents
     public static void OnDamageCall(int hp) { OnDamage?.Invoke(hp); }
     public static void OnShotCall(int hp) { OnShot?.Invoke(hp); }
     public static void OnInventoryRefreshCall() { OnInventoryRefresh?.Invoke(); }
+    public static void OnTutorialCall() { OnTutorial?.Invoke(); }
+    
 }

@@ -21,6 +21,7 @@ public class AI : MonoBehaviour
     [SerializeField] protected GameObject enemyAttack;
     [SerializeField] private GameObject enemyPlayerSight;
     [SerializeField] private GameObject enemyRockHit;
+    [SerializeField] protected GameObject enemyKnockedSound;
 
     private AudioSource controlEnemyAudio;
     protected Vector3 PointToPatrol;
@@ -191,6 +192,11 @@ public class AI : MonoBehaviour
     {
         if (controlEnemyAudio.isPlaying) controlEnemyAudio.Stop();
         isAudioActive = false;
+    }
+
+    private void OnEnabled()
+    {
+        StartCoroutine(NewPointToPatrol());
     }
 
 }

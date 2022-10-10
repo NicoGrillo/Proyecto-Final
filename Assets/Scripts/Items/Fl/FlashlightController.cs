@@ -31,22 +31,20 @@ public class FlashlightController : MonoBehaviour
         {
             Flashlight();
             Flashlightfailure();
+            LostBatteryLevel();
         }
         else BatteryRecharge();
-        LostBatteryLevel();
-
     }
 
     private void Flashlight()
     {
-        //flashlight.Change_Intensivity(GameManager.FLLevel);
+        //lightGO.SetActive(true);
         if (GameManager.FLLevel <= 0)
         {
             withBatteryLeft = false;
-            lightGO.SetActive(false);
         }
     }
-    
+
     private void Flashlightfailure()
     {
         if (GameManager.FLLevel <= 40)
@@ -74,10 +72,10 @@ public class FlashlightController : MonoBehaviour
 
     private void BatteryRecharge()
     {
+        lightGO.SetActive(false);
         if (GameManager.FLLevel > 0)
         {
             withBatteryLeft = true;
-            lightGO.SetActive(true);
         }
     }
 
@@ -103,6 +101,13 @@ public class FlashlightController : MonoBehaviour
         {
             transform.GetChild(i).gameObject.SetActive(value);
         }
+    }
+
+    private void OnEnable()
+    {
+        lightGO = transform.GetChild(1).gameObject;
+        lightGO.SetActive(true);
+        //withBatteryLeft = true;
     }
 }
 

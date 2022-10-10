@@ -16,7 +16,6 @@ public class StepController : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Player"))
         {
-            TutorialEvents.OnTextPanelActivateCall(true);   //EnemiesAreaController: Desactiva a todos los enemies del area
             PlayerEvents.OnCantMoveCall(true);              //PlayerCC: Player no se mueve
             textPanel.SetActive(true);
             noteText.text = stepTXT;

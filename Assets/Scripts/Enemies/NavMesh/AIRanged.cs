@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class AIRanged : AI
 {
-    [SerializeField] GameObject enemyKnockedSound;
     [Header("Ammo")]
     [SerializeField] GameObject enemyAmmoType;
     [SerializeField] GameObject enemyThrowPoint;
@@ -12,6 +11,16 @@ public class AIRanged : AI
 
     private bool inPoint1 = true;
     private bool alreadyKnocked = false;
+
+    protected override void Update()
+    {
+        base.Update();
+        if (alreadyKnocked && distanceToPlayer <= 2)
+        {
+            alreadyKnocked = false;
+            Invoke("WakeUp", 2f);
+        }
+    }
 
     protected override void Attack()
     {
@@ -22,7 +31,6 @@ public class AIRanged : AI
         transform.LookAt(player.transform.position);
         Invoke("resetAttack", 2f);
         Invoke("ammoThrow", 1);
-
     }
 
     private void ammoThrow()
@@ -52,7 +60,6 @@ public class AIRanged : AI
             canMove = false;
             canAttack = false;
             CancelInvoke();
-            Invoke("WakeUp", 5f);
             enemyAnimation.Play("Death");
             alreadyKnocked = true;
             Destroy(Instantiate(enemyKnockedSound, transform.position, Quaternion.identity), 1f);

@@ -31,8 +31,7 @@ public class HUDManager : MonoBehaviour
             instance = this;
             PlayerEvents.OnWin += WinUI;
             PlayerEvents.OnLose += LoseUI;
-            TutorialEvents.OnFLPick += FLPick;
-            TutorialEvents.OnRocksFirstPick += RocksPick;
+            PlayerEvents.OnTutorial += TutorialSettings;
         }
         else
         {
@@ -43,9 +42,6 @@ public class HUDManager : MonoBehaviour
     private void Start()
     {
         selectedText.text = "";
-        noteText.text = TextHUDManager.TutorialMoveText;
-        PlayerEvents.OnCantMoveCall(true);
-        //TutorialEvents.OnTextPanelActivateCall(true);
     }
 
     private void Update()
@@ -55,7 +51,6 @@ public class HUDManager : MonoBehaviour
 
     public static void EnableItem(int childIndex, int selectColor)
     {
-        //DisableAllItemsIcons();
         if (selectColor == 0) instance
             .itemPanel
                 .transform
@@ -147,6 +142,16 @@ public class HUDManager : MonoBehaviour
         PlayerEvents.OnCantMoveCall(true);
     }
 
+    private void TutorialSettings()
+    {
+        textPanel.SetActive(true);
+        PlayerEvents.OnCantMoveCall(true);
+        noteText.text = TextHUDManager.TutorialMoveText;
+
+        TutorialEvents.OnFLPick += FLPick;
+        TutorialEvents.OnRocksFirstPick += RocksPick;
+    }
+
     private void FLPick()
     {
         textPanel.SetActive(true);
@@ -165,6 +170,7 @@ public class HUDManager : MonoBehaviour
     {
         PlayerEvents.OnWin -= WinUI;
         PlayerEvents.OnLose -= LoseUI;
+        PlayerEvents.OnTutorial -= TutorialSettings;
         TutorialEvents.OnFLPick -= FLPick;
         TutorialEvents.OnRocksFirstPick -= RocksPick;
     }

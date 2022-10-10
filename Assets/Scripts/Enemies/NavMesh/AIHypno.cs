@@ -6,6 +6,13 @@ public class AIHypno : AI
 {
     private Vector3 initialPosition;
     private bool isScreaming = false;
+    [SerializeField] bool justIdle = false;
+
+    protected override void Update()
+    {
+        if (justIdle) navMeshAgent.destination = transform.position;
+        else base.Update();
+    }
 
     protected override void Start()
     {
